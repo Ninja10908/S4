@@ -1,0 +1,62 @@
+--BACK
+local plr = game.Players.LocalPlayer
+local fuckdan = game:GetService("Players")
+local getPlr = function(Name)
+    if Name:lower() == "random" then
+        return fuckdan:GetPlayers()[math.random(#fuckdan:GetPlayers())]
+    else
+        Name = Name:lower():gsub("%s", "")
+        for _, x in next, fuckdan:GetPlayers() do
+            if x.Name:lower():match(Name) then
+                return x
+            elseif x.DisplayName:lower():match("^" .. Name) then
+                return x
+            end
+        end
+    end
+end
+
+local cp = game.Players.LocalPlayer.PlayerGui:FindFirstChild("HDAdminGUIs").MainFrame.Pages.Settings.Custom["AE1 Prefix"].SettingValue.TextBox.Text
+local Rayfield = loadstring(game:HttpGet('https://pastebin.com/raw/mcC4qsYd'))()
+local Window = Rayfield:CreateWindow({
+    Name = (game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. ""),
+    LoadingTitle = ("Kurd hub"),
+    LoadingSubtitle = "",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = nil, -- Create a custom folder for your hub/game
+        FileName = ""
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "",   -- The Discord invite code, do not include discord.gg/
+        RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+    },
+    KeySystem = true,       -- Set this to true to use our key system
+    KeySettings = {
+        Title = "کلیل  = kurd",
+        Subtitle = "",
+        Note = "",
+        FileName = "کلیل بنوسە",
+        SaveKey = true,
+        GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+        Key = "kurd"
+    }
+})
+
+local anti = Window:CreateTab("حماية", 14863666449)
+
+
+
+local Button = anti:CreateButton({
+    Name = "خو پاراستن لە تەکان",
+    Interact = "Interaction Example",
+    Callback = function()
+        workspace.FallenPartsDestroyHeight = 0 / 0
+        local plr = game.Players.LocalPlayer
+        local old = plr.Character.HumanoidRootPart.CFrame
+        plr.Character.HumanoidRootPart.CFrame = CFrame.new(363, -4525, 473)
+        wait(.4)
+        plr.Character.HumanoidRootPart.CFrame = old
+    end,
+})

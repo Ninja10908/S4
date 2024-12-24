@@ -1,24 +1,18 @@
--- Make sure this script runs in a LocalScript context for client-side execution
-
--- Play sound
-local Sound = Instance.new("Sound", game:GetService("SoundService"))
-Sound.SoundId = "rbxassetid://232127604"
-Sound:Play()
-
--- Change player name or display name (if desired)
-local player = game.Players.LocalPlayer
-if player then
-    -- Change the player's display name (as player.Name is usually not changeable)
-    player.DisplayName = "KurdHub"  -- You can modify this as needed
-
-    -- Update the player's bio or other information (custom behavior in the game)
-    local argsBio = {[1] = "RolePlayBio", [2] = "KurdHub"}
-    game:GetService("ReplicatedStorage").RE:FindFirstChild("1RPNam1eTex1t"):FireServer(unpack(argsBio))
-
-    -- Change the RP name color
-    local argsColor = {[1] = "PickingRPNameColor", [2] = Color3.fromRGB(194, 56, 164)}
-    game:GetService("ReplicatedStorage").RE:FindFirstChild("1RPNam1eColo1r"):FireServer(unpack(argsColor))
-end
+local Sound = Instance.new("Sound", game:GetService("SoundService"));
+Sound.SoundId = "rbxassetid://232127604";
+Sound:Play();
+local args1 = {[1] = "RolePlayName", [2] = "KurdHub"};
+game:GetService("ReplicatedStorage").RE:FindFirstChild(
+    "1RPNam1eTex1t"):FireServer(unpack(args1));
+local args = {
+    [1] = "PickingRPNameColor",
+    [2] = Color3.fromRGB(194, 56, 164)
+};
+game:GetService("ReplicatedStorage").RE:FindFirstChild(
+    "1RPNam1eColo1r"):FireServer(unpack(args));
+local args4 = {[1] = "RolePlayBio", [2] = "SCRIPT"};
+game:GetService("ReplicatedStorage").RE:FindFirstChild(
+    "1RPNam1eTex1t"):FireServer(unpack(args4))
 
 
 

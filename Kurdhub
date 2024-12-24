@@ -1,7 +1,5 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban"))()
 
-
-
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
@@ -65,7 +63,7 @@ end)
 local KeySystem = Instance.new("TextBox")
 KeySystem.Size = UDim2.new(1, 0, 0.5, 0)
 KeySystem.Position = UDim2.new(0, 0, 0, 0)
-KeySystem.Text = "✅ NEW UPDATE -> SOON ✅"
+KeySystem.Text = "✅زانیاری ئاپدێت داگرە ✅"
 KeySystem.TextColor3 = Color3.new(0, 0, 0)
 KeySystem.BackgroundTransparency = 0.5
 KeySystem.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -96,18 +94,53 @@ GetKeyButton.Position = UDim2.new(0.5, 0, 0.5, 0)
 GetKeyButton.Text = "بادینی"
 GetKeyButton.Parent = frame
 
-
-
-
 SubmitButton.MouseButton1Click:Connect(function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
 end)
 
+-- New "" Button
+local InfoUpdateButton = Instance.new("TextButton")
+InfoUpdateButton.Size = UDim2.new(0.5, 0, 0.5, 0)
+InfoUpdateButton.Position = UDim2.new(0, 0, 1, 0)  -- Position below the "سورانی" button
+InfoUpdateButton.Text = "زانیاری ئاپدێت؟"
+InfoUpdateButton.Parent = frame
 
+--  Window
+local InfoUpdateWindow = Instance.new("Frame")
+InfoUpdateWindow.Size = UDim2.new(0, 200, 0, 200)
+InfoUpdateWindow.Position = UDim2.new(0.5, -100, 0.5, -100)
+InfoUpdateWindow.BackgroundColor3 = Color3.new(0, 0, 0)
+InfoUpdateWindow.Visible = false
+InfoUpdateWindow.Parent = screenGui
 
+local updateTitle = Instance.new("TextLabel")
+updateTitle.Size = UDim2.new(1, 0, 0, 20)
+updateTitle.Position = UDim2.new(0, 0, 0, 0)
+updateTitle.Text = "ئاپدێت."
+updateTitle.TextColor3 = Color3.new(1, 1, 1)
+updateTitle.BackgroundColor3 = Color3.new(0, 0, 0)
+updateTitle.Parent = InfoUpdateWindow
 
+local updateList = Instance.new("TextLabel")
+updateList.Size = UDim2.new(1, 0, 0.8, 0)
+updateList.Position = UDim2.new(0, 0, 0.1, 0)
+updateList.Text = "سۆرانی\nناوەدەم لەبەشی هاک خەڵک\nباوەش کردن لە بەشی هاک خەڵک\nئەنتی بانگی بەقەوەت لەبەشی هاکی \n\nبادینی\nدەف ل بەشی هاکا خەلکی\nهەمبێز ل بەشی هاکا خەلکی\nئەنتی بانگا قەوی ل بەشی هاکا یاریا"
+updateList.TextColor3 = Color3.new(1, 1, 1)
+updateList.BackgroundTransparency = 1
+updateList.TextWrapped = true
+updateList.Parent = InfoUpdateWindow
 
+local CloseInfoButton = Instance.new("TextButton")
+CloseInfoButton.Size = UDim2.new(0.5, 0, 0.2, 0)
+CloseInfoButton.Position = UDim2.new(0.25, 0, 0.9, 0)
+CloseInfoButton.Text = "گرتن"
+CloseInfoButton.Parent = InfoUpdateWindow
 
-GetKeyButton.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
+-- Show the  window when the button is clicked
+InfoUpdateButton.MouseButton1Click:Connect(function()
+    InfoUpdateWindow.Visible = true
+end)
+
+CloseInfoButton.MouseButton1Click:Connect(function()
+    InfoUpdateWindow.Visible = false
 end)

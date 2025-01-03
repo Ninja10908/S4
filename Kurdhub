@@ -21,7 +21,7 @@ local function sendPlayerJoinedNotification(player)
 
     game.StarterGui:SetCore("SendNotification", {
         Title = "Kurd Hub";
-        Text = "Player <" .. player.DisplayName .. "> Join!";  
+        Text = "Player <" .. player.DisplayName .. "> Join✅!";  
         Button1 = "Ok!";  
         Icon = avatarUrl;  
         Duration = 100; 
@@ -46,7 +46,7 @@ local function sendPlayerLeftNotification(player)
     
     game.StarterGui:SetCore("SendNotification", {
         Title = "Kurd Hub";
-        Text = "Player <" .. player.DisplayName .. "> Left";  
+        Text = "Player <" .. player.DisplayName .. "> Left❌";  
         Button1 = "Ok!";  
         Icon = avatarUrl; 
         Duration = 100;  

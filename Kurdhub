@@ -1,13 +1,51 @@
-
-
------
-
-
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban"))()
 
+-- Create the loading screen GUI
+local loadingScreen = Instance.new("ScreenGui")
+loadingScreen.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local loadingFrame = Instance.new("Frame")
+loadingFrame.Size = UDim2.new(0, 400, 0, 100)
+loadingFrame.Position = UDim2.new(0.5, -200, 0.5, -50)
+loadingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+loadingFrame.Parent = loadingScreen
+
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(1, 0, 0.2, 0)
+loadingText.Position = UDim2.new(0, 0, 0, 0)
+loadingText.Text = "Wait for Update Kurdhub"
+loadingText.TextColor3 = Color3.new(1, 1, 1)
+loadingText.BackgroundColor3 = Color3.new(0, 0, 0)
+loadingText.TextScaled = true
+loadingText.Parent = loadingFrame
+
+local progressBarBackground = Instance.new("Frame")
+progressBarBackground.Size = UDim2.new(1, 0, 0.2, 0)
+progressBarBackground.Position = UDim2.new(0, 0, 0.2, 0)
+progressBarBackground.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
+progressBarBackground.Parent = loadingFrame
+
+local progressBar = Instance.new("Frame")
+progressBar.Size = UDim2.new(0, 0, 1, 0)
+progressBar.BackgroundColor3 = Color3.new(0, 1, 0)
+progressBar.Parent = progressBarBackground
+
+-- Function to simulate progress
+local function updateLoadingProgress()
+    for i = 1, 100 do
+        progressBar.Size = UDim2.new(i / 100, 0, 1, 0)
+        loadingText.Text = "Please wait for update kurdbub (" .. i .. "%)"
+        wait(0.05) -- Simulate the loading process with a delay
+    end
+    loadingScreen:Destroy() -- Remove the loading screen after completion
+end
+
+-- Start loading when the script runs
+updateLoadingProgress()
+
+-- Main GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 200, 0, 100)
 frame.Position = UDim2.new(0.5, -100, 0.5, -50)
@@ -99,18 +137,10 @@ GetKeyButton.Position = UDim2.new(0.5, 0, 0.5, 0)
 GetKeyButton.Text = "بادینی"
 GetKeyButton.Parent = frame
 
-
-
-
 SubmitButton.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
 end)
 
-
-
-
-
-
 GetKeyButton.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
 end)

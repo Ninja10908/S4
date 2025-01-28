@@ -34,7 +34,7 @@ progressBar.Parent = progressBarBackground
 local function updateLoadingProgress()
     for i = 1, 100 do
         progressBar.Size = UDim2.new(i / 100, 0, 1, 0)
-        loadingText.Text = "Please wait for update kurdbub (" .. i .. "%)"
+        loadingText.Text = "Please wait for update kurdHub (" .. i .. "%)"
         wait(0.05) -- Simulate the loading process with a delay
     end
     loadingScreen:Destroy() -- Remove the loading screen after completion

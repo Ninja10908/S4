@@ -1,1 +1,10 @@
+local function loadGui(url)
+    loadstring(game:HttpGet(url))()
+end
 
+if game.PlaceId == 4924922222 then
+    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Brookhaven")
+else
+    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
+end

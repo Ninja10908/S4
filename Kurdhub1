@@ -1,6 +1,6 @@
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban"))()
-loadstring(game:HttpGet("https://pastebin.com/raw/H7dnu8rp"))()
+--loadstring(game:HttpGet("https://pastebin.com/raw/H7dnu8rp"))()
 
 -- Main GUI
 local screenGui = Instance.new("ScreenGui")

@@ -1,0 +1,74 @@
+-- Create a ScreenGui and TextLabel in Roblox
+
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player.PlayerGui  -- Make sure it's under the Player's GUI
+
+-- Create a TextLabel to display the text
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(0, 500, 0, 200)  -- Size of the TextLabel
+textLabel.Position = UDim2.new(0.5, -250, 0.4, -100)  -- Position the label towards the top-center
+textLabel.Parent = screenGui
+
+-- Create a Button to switch languages (small size)
+local languageButton = Instance.new("TextButton")
+languageButton.Size = UDim2.new(0, 120, 0, 40)  -- Size for the Switch Language Button
+languageButton.Position = UDim2.new(0.5, -60, 0.7, -25)  -- Position the button towards the bottom-center
+languageButton.Text = "گورینی زاراو/زمان"  -- Button label
+languageButton.Parent = screenGui
+
+-- Create a small "X" Button above the Switch Language Button (to close the GUI)
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)  -- Smaller size for the "X" button
+closeButton.Position = UDim2.new(0.5, -15, 0.7, -70)  -- Position it above the Switch Language Button
+closeButton.Text = "X"  -- Button label (the "X" to represent close)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red color for "X" button
+closeButton.TextSize = 20  -- Size of the "X" text
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text color for "X" button
+closeButton.Parent = screenGui
+
+-- Define the texts for both languages (Updated English Text and Arabic/Kurdish)
+local englishText = "سکریپتی what better than this بەکاردی بو کڕینی هەمو ئەو شتانەی بە پارەن لە brookhaven بە خورایی.\nفێرکاریم داناوە لە تیک توک jack._.827 لە کومێنت یان چات ناوی روبلوکست بنێرە بو ئەوەی بە تەواوی ئیش بکا."
+local arabicText = "سکریپتا what better than this بکاردهێت بو کڕینا هەمی تشتێن ب پارە ل brookhaven ب بەلاش من فێرکاری یا دانای ل تیک توکی jack._.827 ل کومینتی یان ل خاس نافی روبلوکسا خو فرێکە دا بێ مشکیلە دەفتە هەمی تشت فەبن"
+
+-- Initially set the TextLabel to English text (updated with your Kurdish text)
+textLabel.Text = englishText
+
+-- Flag to track the current language (true = English, false = Arabic)
+local isEnglish = true
+
+-- When the language button is clicked, toggle the language
+languageButton.MouseButton1Click:Connect(function()
+    if isEnglish then
+        -- Change to Arabic/Kurdish text
+        textLabel.Text = arabicText
+    else
+        -- Change back to English text
+        textLabel.Text = englishText
+    end
+    -- Toggle the language flag
+    isEnglish = not isEnglish
+end)
+
+-- When the "X" button is clicked, close the GUI (destroy the ScreenGui)
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()  -- Close the GUI by destroying the ScreenGui
+end)
+
+-- Set properties for proper display
+textLabel.TextWrapped = true  -- Ensure text wraps properly
+textLabel.TextSize = 20  -- Set the text size for better visibility
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Set text color to white
+textLabel.BackgroundTransparency = 1  -- Set background to be transparent
+
+-- Optional: Adjust font to support different languages
+textLabel.Font = Enum.Font.SourceSans  -- Font that supports multiple languages
+
+-- Ensure proper handling of bidirectional text
+textLabel.TextDirection = Enum.TextDirection.Contextual  -- Automatically detect text direction
+
+-- Button properties for "Switch Language"
+languageButton.TextSize = 16  -- Smaller text size for the button
+languageButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text color for button
+languageButton.BackgroundColor3 = Color3.fromRGB(0, 122, 204)  -- Blue button color
+languageButton.BackgroundTransparency = 0.2  -- Slight transparency for the button

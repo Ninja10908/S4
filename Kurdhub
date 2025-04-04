@@ -12,7 +12,7 @@ if game.PlaceId == 4924922222 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Brookhaven")
     loadGui("https://raw.githubusercontent.com/Ninja10908/START/refs/heads/main/Brook-pre")
-    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Resala-pre")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/Key/refs/heads/main/Cooppp")
 else
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
 end

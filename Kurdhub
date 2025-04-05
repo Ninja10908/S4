@@ -1,1 +1,5 @@
-bb
+game:GetService("StarterGui"):SetCore("SendNotification",{
+	Title = "Kurdhub", -- Required
+	Text = "Wait for Update", -- Required
+	Icon = "rbxassetid://123" -- Optional
+})

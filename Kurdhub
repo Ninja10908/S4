@@ -12,7 +12,7 @@ textLabel.Position = UDim2.new(0.25, 0, 0.02, 0) -- Centered horizontally, near 
 textLabel.BackgroundTransparency = 1
 textLabel.Text = "script : kurdhub"
 textLabel.TextColor3 = Color3.new(1, 1, 1)
-textLabel.TextTransparency = 0.82 -- 18% visible
+textLabel.TextTransparency = 0.83 -- 18% visible
 textLabel.TextSize = 20
 textLabel.Font = Enum.Font.GothamSemibold
 

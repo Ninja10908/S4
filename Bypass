@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bypass Link</title>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding-top:50px;">
+
+  <h1>Linkvertise / Ad Bypass</h1>
+  <p>Paste the URL below to bypass:</p>
+
+  <input type="text" id="urlInput" placeholder="Paste your link here..." style="width:300px;padding:10px;" />
+  <br><br>
+  <button onclick="bypassLink()" style="padding:10px 20px;">Bypass Now</button>
+
+  <script>
+    function bypassLink() {
+      const url = document.getElementById("urlInput").value.trim();
+      if (!url) return alert("Please enter a valid URL.");
+
+      const redirectBase = "https://bypass.city";
+      const bypassURL = new URL(`${redirectBase}/bypass`);
+      bypassURL.searchParams.set("bypass", url);
+      bypassURL.searchParams.set("userscript", "true");
+      bypassURL.searchParams.set("userscript-version", "14.0.2");
+
+      window.open(bypassURL.toString(), "_blank");
+    }
+  </script>
+
+</body>
+</html>

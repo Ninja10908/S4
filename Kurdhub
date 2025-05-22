@@ -30,12 +30,10 @@ end
 
 if game.PlaceId == 4924922222 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
-    loadGui("https://raw.githubusercontent.com/Ninja10908/Key/refs/heads/main/Goranbrok")
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Copyclick")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Key/refs/heads/main/Dick")
 else
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
-    loadGui("https://raw.githubusercontent.com/Ninja10908/Key/refs/heads/main/Dick")
 end
 
 

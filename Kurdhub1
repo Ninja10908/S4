@@ -37,7 +37,7 @@ MakeRound(Border)
 local TitleBar = Instance.new("TextLabel")
 TitleBar.Size = UDim2.new(1, 0, 0, 35)
 TitleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-TitleBar.Text = "tk: jack._.827"
+TitleBar.Text = "jack._.827"
 TitleBar.TextColor3 = Color3.fromRGB(212, 175, 55)
 TitleBar.Font = Enum.Font.GothamBold
 TitleBar.TextSize = 18

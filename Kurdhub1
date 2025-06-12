@@ -1,4 +1,16 @@
-loadstrin(game:HttpHet("‏https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban"))()
+-- Load ban script first
+local banSuccess, banError = pcall(function()
+    local banScript = game:HttpGet("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban", true)
+    if banScript then
+        loadstring(banScript)()
+    else
+        error("Failed to load ban script")
+    end
+end)
+
+if not banSuccess then
+    warn("Ban script failed to load: "..tostring(banError))
+end
 
 -- Wait for game to load
 repeat wait() until game:IsLoaded()

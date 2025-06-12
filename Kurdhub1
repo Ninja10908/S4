@@ -1,169 +1,344 @@
--- Load ban script first
-local banSuccess, banError = pcall(function()
-    local banScript = game:HttpGet("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/s.ban", true)
-    if banScript then
-        loadstring(banScript)()
-    else
-        error("Failed to load ban script")
-    end
-end)
+-- Enhanced Ban System (40 blocked users)
+local blockedUsers = {
+    "Qween_Rozhe", "rayo_ssrr7", "01KOUR", "paolo_Reko", 
+    "ahmad_kurdish001", "Aram_barwari721", "Safa27can",
+    "arjankurdi15", "yasr99k", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "sahanbazi1244"
+}
 
-if not banSuccess then
-    warn("Ban script failed to load: "..tostring(banError))
+-- SCARY KICK FUNCTION
+local function scaryKick(player)
+    -- Play horror sound
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9118466729"
+    sound.Parent = game:GetService("SoundService")
+    sound.Volume = 2
+    sound:Play()
+    
+    -- Create scary GUI
+    local kickGui = Instance.new("ScreenGui")
+    kickGui.Name = "ScaryKickGUI"
+    kickGui.Parent = player.PlayerGui
+    
+    -- Fullscreen black frame
+    local blackFrame = Instance.new("Frame")
+    blackFrame.Size = UDim2.new(1, 0, 1, 0)
+    blackFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    blackFrame.BorderSizePixel = 0
+    blackFrame.Parent = kickGui
+    
+    -- Bloody message
+    local message = Instance.new("TextLabel")
+    message.Size = UDim2.new(1, 0, 0, 100)
+    message.Position = UDim2.new(0, 0, 0.5, -50)
+    message.Text = "☠ YOU ARE BANNED FROM KURD HUB ☠\nTiTok : Jack._.827"
+    message.TextColor3 = Color3.new(1, 0, 0)
+    message.Font = Enum.Font.Creepster
+    message.TextSize = 40
+    message.TextStrokeColor3 = Color3.new(0.5, 0, 0)
+    message.TextStrokeTransparency = 0
+    message.BackgroundTransparency = 1
+    message.Parent = kickGui
+    
+    -- Scary face that appears
+    local scaryFace = Instance.new("ImageLabel")
+    scaryFace.Size = UDim2.new(0, 300, 0, 300)
+    scaryFace.Position = UDim2.new(0.5, -150, 0.5, -150)
+    scaryFace.Image = "rbxassetid://6954539573"
+    scaryFace.BackgroundTransparency = 1
+    scaryFace.Visible = false
+    scaryFace.Parent = kickGui
+    
+    -- Blood effect
+    local blood = Instance.new("ImageLabel")
+    blood.Size = UDim2.new(1, 0, 1, 0)
+    blood.Image = "rbxassetid://2787090423"
+    blood.ImageTransparency = 0.7
+    blood.BackgroundTransparency = 1
+    blood.Parent = kickGui
+    
+    -- Flash effect
+    local flash = Instance.new("Frame")
+    flash.Size = UDim2.new(1, 0, 1, 0)
+    flash.BackgroundColor3 = Color3.new(1, 0, 0)
+    flash.BackgroundTransparency = 1
+    flash.Parent = kickGui
+    
+    -- Animation sequence
+    spawn(function()
+        for i = 1, 30 do
+            message.TextTransparency = i % 2 * 0.5
+            wait(0.1)
+        end
+        
+        scaryFace.Visible = true
+        flash.BackgroundTransparency = 0.5
+        for i = 1, 10 do
+            flash.BackgroundTransparency = flash.BackgroundTransparency + 0.05
+            scaryFace.Size = scaryFace.Size + UDim2.new(0, 10, 0, 10)
+            scaryFace.Position = scaryFace.Position - UDim2.new(0, 5, 0, 5)
+            wait(0.05)
+        end
+        flash.BackgroundTransparency = 1
+        
+        for i = 1, 20 do
+            scaryFace.Rotation = math.random(-5, 5)
+            scaryFace.Position = UDim2.new(0.5, -150 + math.random(-10,10), 0.5, -150 + math.random(-10,10))
+            wait(0.1)
+        end
+        
+        player:Kick("\n\n☠ YOU HAVE BEEN BANNED FROM KURD HUB! ☠\nCONTACT: jack._.827 ON TIKTOK\n\nIM Waiting For you!!\n")
+    end)
 end
 
--- Wait for game to load
-repeat wait() until game:IsLoaded()
+local function checkBlockedUsers()
+    local playerName = game.Players.LocalPlayer.Name
+    for _, blockedName in ipairs(blockedUsers) do
+        if playerName == blockedName then
+            local sound = Instance.new("Sound")
+            sound.SoundId = "rbxassetid://1301186018"
+            sound.Parent = game:GetService("SoundService")
+            sound:Play()
+            
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "Kurd hub", 
+                Text = "You are blocked from using this menu"
+            })
+            
+            wait(3.5)
+            scaryKick(game.Players.LocalPlayer)
+            wait(2)
+            while true do end
+            return true
+        end
+    end
+    return false
+end
 
--- Create main GUI
+if checkBlockedUsers() then while true do end end
+spawn(function() while true do wait(5) if checkBlockedUsers() then while true do end end end end)
+
+-- SCARY MENU CREATION
+repeat task.wait() until game:IsLoaded()
+
+-- Blood effect
+local function createBloodEffect()
+    local blood = Instance.new("Frame")
+    blood.Size = UDim2.new(0, math.random(5,15), 0, math.random(20,40))
+    blood.Position = UDim2.new(0, math.random(0,300), 0, -40)
+    blood.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+    blood.BorderSizePixel = 0
+    blood.ZIndex = 10
+    blood.Parent = script.Parent
+    
+    game:GetService("TweenService"):Create(
+        blood,
+        TweenInfo.new(math.random(1,3)),
+        {Position = UDim2.new(blood.Position.X.Scale, blood.Position.X.Offset, 1, 10)}
+    ):Play()
+    
+    game.Debris:AddItem(blood, 3)
+end
+
+-- Horror sounds
+local horrorSounds = {
+    "rbxassetid://9118466729", 
+    "rbxassetid://5985132769", 
+    "rbxassetid://6864580909"
+}
+
+-- Create GUI
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "ArabicMiniGUI"
+ScreenGui.Name = "KurdishHorrorGUI"
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
 -- Main frame
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 220, 0, 160) -- Slightly larger for Arabic text
-MainFrame.Position = UDim2.new(0.5, -110, 0.5, -80)
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+MainFrame.Size = UDim2.new(0, 300, 0, 220)
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -110)
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 0, 0)
+MainFrame.BackgroundTransparency = 0.2
 MainFrame.BorderSizePixel = 0
 MainFrame.Parent = ScreenGui
 
--- Gold border
+-- Blood texture
+local BloodTexture = Instance.new("ImageLabel")
+BloodTexture.Image = "rbxassetid://2787090423"
+BloodTexture.Size = UDim2.new(1, 0, 1, 0)
+BloodTexture.BackgroundTransparency = 1
+BloodTexture.ImageTransparency = 0.7
+BloodTexture.Parent = MainFrame
+
+-- Pulsing border
 local Border = Instance.new("Frame")
 Border.Size = UDim2.new(1, 6, 1, 6)
 Border.Position = UDim2.new(0, -3, 0, -3)
-Border.BackgroundColor3 = Color3.fromRGB(212, 175, 55)
+Border.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
 Border.ZIndex = 0
 Border.Parent = MainFrame
 
--- Add rounded corners
-local function MakeRound(frame)
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 8)
-    Corner.Parent = frame
-end
+-- Pulsing animation
+spawn(function()
+    while true do
+        game:GetService("TweenService"):Create(
+            Border,
+            TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+            {BackgroundColor3 = Color3.fromRGB(200, 0, 0)}
+        ):Play()
+        wait(1.5)
+    end
+end)
 
-MakeRound(MainFrame)
-MakeRound(Border)
-
--- Title bar
+-- Title with new font
 local TitleBar = Instance.new("TextLabel")
-TitleBar.Size = UDim2.new(1, 0, 0, 35)
-TitleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-TitleBar.Text = "jack._.827"
-TitleBar.TextColor3 = Color3.fromRGB(212, 175, 55)
-TitleBar.Font = Enum.Font.GothamBold
-TitleBar.TextSize = 18
-TitleBar.TextScaled = true
+TitleBar.Size = UDim2.new(1, 0, 0, 40)
+TitleBar.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
+TitleBar.Text = "Tiktok : Jack._.827"
+TitleBar.TextColor3 = Color3.fromRGB(255, 0, 0)
+TitleBar.Font = Enum.Font.Creepster
+TitleBar.TextSize = 22
+TitleBar.TextStrokeTransparency = 0.5
+TitleBar.TextStrokeColor3 = Color3.fromRGB(50, 0, 0)
 TitleBar.Parent = MainFrame
+
+-- Title text animation
+spawn(function()
+    while true do
+        TitleBar.Text = "Tiktok : Jack._.827"
+        wait(2)
+        TitleBar.Text = "Telegram : Jack_827"
+        wait(2)
+    end
+end)
 
 -- Close button
 local CloseButton = Instance.new("TextButton")
 CloseButton.Size = UDim2.new(0, 30, 0, 30)
-CloseButton.Position = UDim2.new(1, -35, 0, 2)
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.new(1, 1, 1)
-CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-CloseButton.Font = Enum.Font.GothamBold
+CloseButton.Position = UDim2.new(1, -35, 0, 5)
+CloseButton.Text = "☠"
+CloseButton.TextColor3 = Color3.new(1, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+CloseButton.Font = Enum.Font.SciFi
+CloseButton.TextSize = 20
 CloseButton.Parent = MainFrame
-MakeRound(CloseButton)
 
 -- Buttons container
 local ButtonsFrame = Instance.new("Frame")
-ButtonsFrame.Size = UDim2.new(1, -20, 0, 90)
-ButtonsFrame.Position = UDim2.new(0, 10, 0, 45)
+ButtonsFrame.Size = UDim2.new(1, -20, 0, 150)
+ButtonsFrame.Position = UDim2.new(0, 10, 0, 50)
 ButtonsFrame.BackgroundTransparency = 1
 ButtonsFrame.Parent = MainFrame
 
--- Create Arabic button function
-local function CreateArabicButton(text, position)
+-- Create buttons with new colors
+local function CreateHorrorButton(text, position, url)
     local Button = Instance.new("TextButton")
-    Button.Size = UDim2.new(1, 0, 0, 40)
+    Button.Size = UDim2.new(1, 0, 0, 60)
     Button.Position = position
     Button.Text = text
-    Button.TextColor3 = Color3.new(1, 1, 1)
-    Button.BackgroundColor3 = Color3.fromRGB(212, 175, 55)
-    Button.Font = Enum.Font.GothamBold
-    Button.TextSize = 16
-    Button.Parent = ButtonsFrame
-    MakeRound(Button)
+    Button.Font = Enum.Font.SourceSansBold
     
-    -- Hover effect
+    if text:find("Kurdish") then
+        Button.TextColor3 = Color3.fromRGB(255, 0, 0)
+    else
+        Button.TextColor3 = Color3.fromRGB(0, 200, 200)
+    end
+    
+    Button.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
+    Button.TextSize = 18
+    Button.TextStrokeTransparency = 0.7
+    Button.TextStrokeColor3 = Color3.fromRGB(50, 0, 0)
+    Button.Parent = ButtonsFrame
+    
     Button.MouseEnter:Connect(function()
-        Button.BackgroundColor3 = Color3.fromRGB(232, 195, 75)
+        Button.BackgroundColor3 = Color3.fromRGB(40, 0, 0)
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://340722758"
+        sound.Parent = game:GetService("SoundService")
+        sound:Play()
     end)
     
     Button.MouseLeave:Connect(function()
-        Button.BackgroundColor3 = Color3.fromRGB(212, 175, 55)
+        Button.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
     end)
     
-    return Button
+    Button.MouseButton1Click:Connect(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = horrorSounds[math.random(1,#horrorSounds)]
+        sound.Parent = game:GetService("SoundService")
+        sound:Play()
+        
+        for i = 1, 5 do
+            createBloodEffect()
+            wait(0.2)
+        end
+        
+        local shakeOffset = 5
+        for i = 1, 10 do
+            MainFrame.Position = UDim2.new(
+                0.5, -150 + math.random(-shakeOffset,shakeOffset),
+                0.5, -110 + math.random(-shakeOffset,shakeOffset))
+            shakeOffset = shakeOffset - 0.5
+            wait(0.05)
+        end
+        
+        ScreenGui.Enabled = false
+        local success, err = pcall(function()
+            loadstring(game:HttpGet(url, true))()
+        end)
+        
+        if not success then
+            ScreenGui.Enabled = true
+        end
+    end)
 end
 
 -- Create buttons
-local SoraniBtn = CreateArabicButton("سوراني", UDim2.new(0, 0, 0, 0))
-local BadiniBtn = CreateArabicButton("باديني", UDim2.new(0, 0, 0, 50))
+CreateHorrorButton("Kurdish Sorani", UDim2.new(0, 0, 0, 0), "https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
+CreateHorrorButton("Kurdish Badini", UDim2.new(0, 0, 0, 70), "https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
 
 -- Dragging functionality
-local Dragging, DragInput, DragStart, StartPos
+local UserInputService = game:GetService("UserInputService")
+local dragging = false
+local dragStart, startPos
 
 TitleBar.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        Dragging = true
-        DragStart = input.Position
-        StartPos = MainFrame.Position
-        
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                Dragging = false
-            end
-        end)
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
     end
 end)
 
-TitleBar.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement then
-        DragInput = input
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 end)
 
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if input == DragInput and Dragging then
-        local Delta = input.Position - DragStart
-        MainFrame.Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + Delta.X, StartPos.Y.Scale, StartPos.Y.Offset + Delta.Y)
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
     end
 end)
 
--- Script loading function with better error handling
-local function LoadScript(url)
-    local success, err = pcall(function()
-        local response = game:HttpGet(url, true)
-        if response then
-            loadstring(response)()
-        else
-            error("Failed to fetch script")
-        end
-    end)
-    
-    if not success then
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Kurdhub",
-            Text = "error: "..tostring(err),
-            Duration = 5
-        })
-    end
-end
-
--- Button actions
-SoraniBtn.MouseButton1Click:Connect(function()
-    LoadScript("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
-end)
-
-BadiniBtn.MouseButton1Click:Connect(function()
-    LoadScript("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
-end)
-
+-- Close button action
 CloseButton.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
+end)
+
+-- Random blood drips
+spawn(function()
+    while true do
+        wait(math.random(5,15))
+        createBloodEffect()
+    end
 end)

@@ -2,17 +2,16 @@
 local blockedUsers = {
     "Qween_Rozhe", "rayo_ssrr7", "01KOUR", "paolo_Reko", 
     "ahmad_kurdish001", "Aram_barwari721", "Safa27can",
-    "arjankurdi15", "yasr99k", "The_Noobeip", "ahmad_kurdish001",
-    "Armanj_170", "HEREANOTHERONe", "HEREANOTHERONe",
+    "arjankurdi15", "yasr99k", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "sahanbaz"
+    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe"
 }
-
 -- SCARY KICK FUNCTION
 local function scaryKick(player)
     -- Play horror sound
@@ -128,7 +127,21 @@ if checkBlockedUsers() then while true do end end
 -- Language Selection System
 local player = game:GetService("Players").LocalPlayer
 local playerName = player.Name
-local choiceKey = "jackZmanchangeChoice_"..playerName
+local choiceKey = "jackfileusernamesaveChoice_"..playerName
+local executedKey = "KurdishHubExecuted_"..playerName
+
+-- Check if already executed
+if player:GetAttribute(executedKey) then
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Kurd Hub",
+        Text = "You already executed this script!",
+        Duration = 5
+    })
+    return
+end
+
+-- Mark as executed
+player:SetAttribute(executedKey, true)
 
 -- Function to save choice permanently
 local function saveLanguageChoice(choice)
@@ -138,7 +151,7 @@ local function saveLanguageChoice(choice)
     -- Save to DataStore
     local success, errorMsg = pcall(function()
         local DataStoreService = game:GetService("DataStoreService")
-        local languageDataStore = DataStoreService:GetDataStore("jackZmanchangeChoices")
+        local languageDataStore = DataStoreService:GetDataStore("jackfileusernamesaveChoices")
         languageDataStore:SetAsync(playerName, choice)
     end)
     
@@ -146,12 +159,12 @@ local function saveLanguageChoice(choice)
         -- Fallback: Save to local file
         local fileData = {}
         local fileSuccess, existingData = pcall(function()
-            return game:GetService("HttpService"):JSONDecode(readfile("jackZmanchange.txt"))
+            return game:GetService("HttpService"):JSONDecode(readfile("jackfileusernamesave.txt"))
         end)
         if fileSuccess then fileData = existingData end
         
         fileData[playerName] = choice
-        writefile("jackZmanchange.txt", game:GetService("HttpService"):JSONEncode(fileData))
+        writefile("jackfileusernamesave.txt", game:GetService("HttpService"):JSONEncode(fileData))
     end
 end
 
@@ -164,7 +177,7 @@ local function loadLanguageChoice()
     -- 2. Check DataStore
     local success, result = pcall(function()
         local DataStoreService = game:GetService("DataStoreService")
-        local languageDataStore = DataStoreService:GetDataStore("jackZmanchangeChoices")
+        local languageDataStore = DataStoreService:GetDataStore("jackfileusernamesaveChoices")
         return languageDataStore:GetAsync(playerName)
     end)
     
@@ -175,7 +188,7 @@ local function loadLanguageChoice()
     
     -- 3. Check local file
     local fileSuccess, fileResult = pcall(function()
-        return game:GetService("HttpService"):JSONDecode(readfile("jackZmanchange.txt"))
+        return game:GetService("HttpService"):JSONDecode(readfile("jackfileusernamesave.txt"))
     end)
     
     if fileSuccess and fileResult and fileResult[playerName] then

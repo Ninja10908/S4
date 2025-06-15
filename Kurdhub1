@@ -2,8 +2,8 @@
 local blockedUsers = {
     "Qween_Rozhe", "rayo_ssrr7", "01KOUR", "paolo_Reko", 
     "ahmad_kurdish001", "Aram_barwari721", "Safa27can",
-    "arjankurdi15", "yasr99k", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "arjankurdi15", "yasr99k", "The_Noobeip", "ahmad_kurdish001",
+    "Armanj_170", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
@@ -122,223 +122,233 @@ local function checkBlockedUsers()
     return false
 end
 
+-- Check if player is banned first
 if checkBlockedUsers() then while true do end end
-spawn(function() while true do wait(5) if checkBlockedUsers() then while true do end end end end)
 
--- SCARY MENU CREATION
-repeat task.wait() until game:IsLoaded()
+-- Language Selection System
+local player = game:GetService("Players").LocalPlayer
+local playerName = player.Name
+local choiceKey = "jackZmanchangeChoice_"..playerName
 
--- Blood effect
-local function createBloodEffect()
-    local blood = Instance.new("Frame")
-    blood.Size = UDim2.new(0, math.random(5,15), 0, math.random(20,40))
-    blood.Position = UDim2.new(0, math.random(0,300), 0, -40)
-    blood.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-    blood.BorderSizePixel = 0
-    blood.ZIndex = 10
-    blood.Parent = script.Parent
+-- Function to save choice permanently
+local function saveLanguageChoice(choice)
+    -- Save to PlayerAttributes
+    player:SetAttribute(choiceKey, choice)
     
-    game:GetService("TweenService"):Create(
-        blood,
-        TweenInfo.new(math.random(1,3)),
-        {Position = UDim2.new(blood.Position.X.Scale, blood.Position.X.Offset, 1, 10)}
-    ):Play()
+    -- Save to DataStore
+    local success, errorMsg = pcall(function()
+        local DataStoreService = game:GetService("DataStoreService")
+        local languageDataStore = DataStoreService:GetDataStore("jackZmanchangeChoices")
+        languageDataStore:SetAsync(playerName, choice)
+    end)
     
-    game.Debris:AddItem(blood, 3)
+    if not success then
+        -- Fallback: Save to local file
+        local fileData = {}
+        local fileSuccess, existingData = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(readfile("jackZmanchange.txt"))
+        end)
+        if fileSuccess then fileData = existingData end
+        
+        fileData[playerName] = choice
+        writefile("jackZmanchange.txt", game:GetService("HttpService"):JSONEncode(fileData))
+    end
 end
 
--- Horror sounds
-local horrorSounds = {
-    "rbxassetid://9118466729", 
-    "rbxassetid://5985132769", 
-    "rbxassetid://6864580909"
-}
-
--- Create GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "KurdishHorrorGUI"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false
-
--- Main frame
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 300, 0, 220)
-MainFrame.Position = UDim2.new(0.5, -150, 0.5, -110)
-MainFrame.BackgroundColor3 = Color3.fromRGB(10, 0, 0)
-MainFrame.BackgroundTransparency = 0.2
-MainFrame.BorderSizePixel = 0
-MainFrame.Parent = ScreenGui
-
--- Blood texture
-local BloodTexture = Instance.new("ImageLabel")
-BloodTexture.Image = "rbxassetid://2787090423"
-BloodTexture.Size = UDim2.new(1, 0, 1, 0)
-BloodTexture.BackgroundTransparency = 1
-BloodTexture.ImageTransparency = 0.7
-BloodTexture.Parent = MainFrame
-
--- Pulsing border
-local Border = Instance.new("Frame")
-Border.Size = UDim2.new(1, 6, 1, 6)
-Border.Position = UDim2.new(0, -3, 0, -3)
-Border.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-Border.ZIndex = 0
-Border.Parent = MainFrame
-
--- Pulsing animation
-spawn(function()
-    while true do
-        game:GetService("TweenService"):Create(
-            Border,
-            TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-            {BackgroundColor3 = Color3.fromRGB(200, 0, 0)}
-        ):Play()
-        wait(1.5)
-    end
-end)
-
--- Title with new font
-local TitleBar = Instance.new("TextLabel")
-TitleBar.Size = UDim2.new(1, 0, 0, 40)
-TitleBar.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
-TitleBar.Text = "Tiktok : Jack._.827"
-TitleBar.TextColor3 = Color3.fromRGB(255, 0, 0)
-TitleBar.Font = Enum.Font.Creepster
-TitleBar.TextSize = 22
-TitleBar.TextStrokeTransparency = 0.5
-TitleBar.TextStrokeColor3 = Color3.fromRGB(50, 0, 0)
-TitleBar.Parent = MainFrame
-
--- Title text animation
-spawn(function()
-    while true do
-        TitleBar.Text = "Tiktok : Jack._.827"
-        wait(2)
-        TitleBar.Text = "Telegram : Jack_827"
-        wait(2)
-    end
-end)
-
--- Close button
-local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0, 30, 0, 30)
-CloseButton.Position = UDim2.new(1, -35, 0, 5)
-CloseButton.Text = "☠"
-CloseButton.TextColor3 = Color3.new(1, 0, 0)
-CloseButton.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
-CloseButton.Font = Enum.Font.SciFi
-CloseButton.TextSize = 20
-CloseButton.Parent = MainFrame
-
--- Buttons container
-local ButtonsFrame = Instance.new("Frame")
-ButtonsFrame.Size = UDim2.new(1, -20, 0, 150)
-ButtonsFrame.Position = UDim2.new(0, 10, 0, 50)
-ButtonsFrame.BackgroundTransparency = 1
-ButtonsFrame.Parent = MainFrame
-
--- Create buttons with new colors
-local function CreateHorrorButton(text, position, url)
-    local Button = Instance.new("TextButton")
-    Button.Size = UDim2.new(1, 0, 0, 60)
-    Button.Position = position
-    Button.Text = text
-    Button.Font = Enum.Font.SourceSansBold
+-- Function to load saved choice
+local function loadLanguageChoice()
+    -- 1. Check PlayerAttributes
+    local choice = player:GetAttribute(choiceKey)
+    if choice then return choice end
     
-    if text:find("Kurdish") then
-        Button.TextColor3 = Color3.fromRGB(255, 0, 0)
-    else
-        Button.TextColor3 = Color3.fromRGB(0, 200, 200)
-    end
-    
-    Button.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
-    Button.TextSize = 18
-    Button.TextStrokeTransparency = 0.7
-    Button.TextStrokeColor3 = Color3.fromRGB(50, 0, 0)
-    Button.Parent = ButtonsFrame
-    
-    Button.MouseEnter:Connect(function()
-        Button.BackgroundColor3 = Color3.fromRGB(40, 0, 0)
-        local sound = Instance.new("Sound")
-        sound.SoundId = "rbxassetid://340722758"
-        sound.Parent = game:GetService("SoundService")
-        sound:Play()
+    -- 2. Check DataStore
+    local success, result = pcall(function()
+        local DataStoreService = game:GetService("DataStoreService")
+        local languageDataStore = DataStoreService:GetDataStore("jackZmanchangeChoices")
+        return languageDataStore:GetAsync(playerName)
     end)
     
-    Button.MouseLeave:Connect(function()
-        Button.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
+    if success and result then
+        player:SetAttribute(choiceKey, result)
+        return result
+    end
+    
+    -- 3. Check local file
+    local fileSuccess, fileResult = pcall(function()
+        return game:GetService("HttpService"):JSONDecode(readfile("jackZmanchange.txt"))
     end)
     
-    Button.MouseButton1Click:Connect(function()
-        local sound = Instance.new("Sound")
-        sound.SoundId = horrorSounds[math.random(1,#horrorSounds)]
-        sound.Parent = game:GetService("SoundService")
-        sound:Play()
+    if fileSuccess and fileResult and fileResult[playerName] then
+        player:SetAttribute(choiceKey, fileResult[playerName])
+        return fileResult[playerName]
+    end
+    
+    return nil
+end
+
+-- Function to create language selection menu
+local function createLanguageMenu()
+    -- Create GUI
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "LanguageSelectionGUI"
+    gui.Parent = player:WaitForChild("PlayerGui")
+    
+    -- Main frame
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 300, 0, 200)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+    frame.Parent = gui
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 40)
+    title.Text = "هەڵبژاردنی زمان"
+    title.TextColor3 = Color3.new(1, 1, 1)
+    title.Font = Enum.Font.SourceSansBold
+    title.TextSize = 24
+    title.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
+    title.Parent = frame
+    
+    -- Instruction
+    local instruction = Instance.new("TextLabel")
+    instruction.Size = UDim2.new(1, -20, 0, 40)
+    instruction.Position = UDim2.new(0, 10, 0, 40)
+    instruction.Text = "تکایە زمانێک هەڵبژێرە:"
+    instruction.TextColor3 = Color3.new(1, 1, 1)
+    instruction.Font = Enum.Font.SourceSans
+    instruction.TextSize = 18
+    instruction.BackgroundTransparency = 1
+    instruction.Parent = frame
+    
+    -- Sorani button
+    local soraniBtn = Instance.new("TextButton")
+    soraniBtn.Size = UDim2.new(0.4, 0, 0, 40)
+    soraniBtn.Position = UDim2.new(0.1, 0, 0.5, 0)
+    soraniBtn.Text = "سورانی"
+    soraniBtn.TextColor3 = Color3.new(1, 1, 1)
+    soraniBtn.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+    soraniBtn.Font = Enum.Font.SourceSansBold
+    soraniBtn.TextSize = 20
+    soraniBtn.Parent = frame
+    
+    -- Badini button
+    local badiniBtn = Instance.new("TextButton")
+    badiniBtn.Size = UDim2.new(0.4, 0, 0, 40)
+    badiniBtn.Position = UDim2.new(0.5, 0, 0.5, 0)
+    badiniBtn.Text = "بادینی"
+    badiniBtn.TextColor3 = Color3.new(1, 1, 1)
+    badiniBtn.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+    badiniBtn.Font = Enum.Font.SourceSansBold
+    badiniBtn.TextSize = 20
+    badiniBtn.Parent = frame
+    
+    -- Function to show confirmation
+    local function showConfirmation(choice)
+        -- Create confirmation GUI
+        local confirmGui = Instance.new("ScreenGui")
+        confirmGui.Name = "ConfirmationGUI"
+        confirmGui.Parent = player:WaitForChild("PlayerGui")
         
-        for i = 1, 5 do
-            createBloodEffect()
-            wait(0.2)
+        -- Background frame
+        local bgFrame = Instance.new("Frame")
+        bgFrame.Size = UDim2.new(1, 0, 1, 0)
+        bgFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+        bgFrame.BackgroundTransparency = 0.5
+        bgFrame.Parent = confirmGui
+        
+        -- Confirmation frame
+        local confirmFrame = Instance.new("Frame")
+        confirmFrame.Size = UDim2.new(0, 350, 0, 150)
+        confirmFrame.Position = UDim2.new(0.5, -175, 0.5, -75)
+        confirmFrame.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+        confirmFrame.Parent = confirmGui
+        
+        -- Custom message based on choice
+        local confirmationMessage = ""
+        if choice == "بادینی" then
+            confirmationMessage = "ئەرێ تویئ پشت راستی ژ هەلبژراتنا فی زمانی؟ تو ئێدی نەشێی زمانی بگهوری"
+        else
+            confirmationMessage = "دڵنیایت لە هەڵبژاردنی "..choice.."? (دوای پشتڕاستکردنەوە ناتوانیت بیگۆڕیت)"
         end
         
-        local shakeOffset = 5
-        for i = 1, 10 do
-            MainFrame.Position = UDim2.new(
-                0.5, -150 + math.random(-shakeOffset,shakeOffset),
-                0.5, -110 + math.random(-shakeOffset,shakeOffset))
-            shakeOffset = shakeOffset - 0.5
-            wait(0.05)
-        end
+        -- Message
+        local msg = Instance.new("TextLabel")
+        msg.Size = UDim2.new(1, -20, 0.6, 0)
+        msg.Position = UDim2.new(0, 10, 0, 10)
+        msg.Text = confirmationMessage
+        msg.TextColor3 = Color3.new(1, 1, 1)
+        msg.Font = Enum.Font.SourceSans
+        msg.TextSize = 18
+        msg.TextWrapped = true
+        msg.BackgroundTransparency = 1
+        msg.Parent = confirmFrame
         
-        ScreenGui.Enabled = false
-        local success, err = pcall(function()
-            loadstring(game:HttpGet(url, true))()
+        -- Yes button
+        local yesBtn = Instance.new("TextButton")
+        yesBtn.Size = UDim2.new(0.4, 0, 0.3, 0)
+        yesBtn.Position = UDim2.new(0.1, 0, 0.65, 0)
+        yesBtn.Text = "بەڵێ"
+        yesBtn.TextColor3 = Color3.new(0, 1, 0)
+        yesBtn.BackgroundColor3 = Color3.fromRGB(0, 50, 0)
+        yesBtn.Font = Enum.Font.SourceSansBold
+        yesBtn.TextSize = 20
+        yesBtn.Parent = confirmFrame
+        
+        -- No button
+        local noBtn = Instance.new("TextButton")
+        noBtn.Size = UDim2.new(0.4, 0, 0.3, 0)
+        noBtn.Position = UDim2.new(0.5, 0, 0.65, 0)
+        noBtn.Text = "نەخێر"
+        noBtn.TextColor3 = Color3.new(1, 0, 0)
+        noBtn.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
+        noBtn.Font = Enum.Font.SourceSansBold
+        noBtn.TextSize = 20
+        noBtn.Parent = confirmFrame
+        
+        -- Button actions
+        yesBtn.MouseButton1Click:Connect(function()
+            -- Save choice permanently
+            saveLanguageChoice(choice)
+            
+            -- Close both GUIs
+            gui:Destroy()
+            confirmGui:Destroy()
+            
+            -- Execute the chosen script
+            if choice == "سورانی" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
+            else
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
+            end
         end)
         
-        if not success then
-            ScreenGui.Enabled = true
-        end
+        noBtn.MouseButton1Click:Connect(function()
+            confirmGui:Destroy()
+        end)
+    end
+    
+    -- Button actions
+    soraniBtn.MouseButton1Click:Connect(function()
+        showConfirmation("سورانی")
+    end)
+    
+    badiniBtn.MouseButton1Click:Connect(function()
+        showConfirmation("بادینی")
     end)
 end
 
--- Create buttons
-CreateHorrorButton("Kurdish Sorani", UDim2.new(0, 0, 0, 0), "https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
-CreateHorrorButton("Kurdish Badini", UDim2.new(0, 0, 0, 70), "https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
+-- Load saved choice
+local savedChoice = loadLanguageChoice()
 
--- Dragging functionality
-local UserInputService = game:GetService("UserInputService")
-local dragging = false
-local dragStart, startPos
-
-TitleBar.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = MainFrame.Position
+-- If player hasn't chosen before, show selection menu
+if not savedChoice then
+    createLanguageMenu()
+else
+    -- If choice already made, execute the saved script
+    if savedChoice == "سورانی" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
+    else
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
     end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStart
-        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-    end
-end)
-
--- Close button action
-CloseButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
--- Random blood drips
-spawn(function()
-    while true do
-        wait(math.random(5,15))
-        createBloodEffect()
-    end
-end)
+end

@@ -30,7 +30,6 @@ if game.PlaceId == 4924922222 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Copyclick")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Key/refs/heads/main/Dick")
 elseif game.PlaceId == 126884695634066 then
-    loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/krd")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Pets-grow")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Location-grow")

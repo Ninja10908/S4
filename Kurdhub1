@@ -12,6 +12,7 @@ local blockedUsers = {
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe"
 }
+
 -- SCARY KICK FUNCTION
 local function scaryKick(player)
     -- Play horror sound
@@ -126,78 +127,6 @@ if checkBlockedUsers() then while true do end end
 
 -- Language Selection System
 local player = game:GetService("Players").LocalPlayer
-local playerName = player.Name
-local choiceKey = "jackfileusernamesaveChoice_"..playerName
-local executedKey = "KurdishHubExecuted_"..playerName
-
--- Check if already executed
-if player:GetAttribute(executedKey) then
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Kurd Hub",
-        Text = "You already executed this script!",
-        Duration = 5
-    })
-    return
-end
-
--- Mark as executed
-player:SetAttribute(executedKey, true)
-
--- Function to save choice permanently
-local function saveLanguageChoice(choice)
-    -- Save to PlayerAttributes
-    player:SetAttribute(choiceKey, choice)
-    
-    -- Save to DataStore
-    local success, errorMsg = pcall(function()
-        local DataStoreService = game:GetService("DataStoreService")
-        local languageDataStore = DataStoreService:GetDataStore("jackfileusernamesaveChoices")
-        languageDataStore:SetAsync(playerName, choice)
-    end)
-    
-    if not success then
-        -- Fallback: Save to local file
-        local fileData = {}
-        local fileSuccess, existingData = pcall(function()
-            return game:GetService("HttpService"):JSONDecode(readfile("jackfileusernamesave.txt"))
-        end)
-        if fileSuccess then fileData = existingData end
-        
-        fileData[playerName] = choice
-        writefile("jackfileusernamesave.txt", game:GetService("HttpService"):JSONEncode(fileData))
-    end
-end
-
--- Function to load saved choice
-local function loadLanguageChoice()
-    -- 1. Check PlayerAttributes
-    local choice = player:GetAttribute(choiceKey)
-    if choice then return choice end
-    
-    -- 2. Check DataStore
-    local success, result = pcall(function()
-        local DataStoreService = game:GetService("DataStoreService")
-        local languageDataStore = DataStoreService:GetDataStore("jackfileusernamesaveChoices")
-        return languageDataStore:GetAsync(playerName)
-    end)
-    
-    if success and result then
-        player:SetAttribute(choiceKey, result)
-        return result
-    end
-    
-    -- 3. Check local file
-    local fileSuccess, fileResult = pcall(function()
-        return game:GetService("HttpService"):JSONDecode(readfile("jackfileusernamesave.txt"))
-    end)
-    
-    if fileSuccess and fileResult and fileResult[playerName] then
-        player:SetAttribute(choiceKey, fileResult[playerName])
-        return fileResult[playerName]
-    end
-    
-    return nil
-end
 
 -- Function to create language selection menu
 local function createLanguageMenu()
@@ -256,112 +185,17 @@ local function createLanguageMenu()
     badiniBtn.TextSize = 20
     badiniBtn.Parent = frame
     
-    -- Function to show confirmation
-    local function showConfirmation(choice)
-        -- Create confirmation GUI
-        local confirmGui = Instance.new("ScreenGui")
-        confirmGui.Name = "ConfirmationGUI"
-        confirmGui.Parent = player:WaitForChild("PlayerGui")
-        
-        -- Background frame
-        local bgFrame = Instance.new("Frame")
-        bgFrame.Size = UDim2.new(1, 0, 1, 0)
-        bgFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-        bgFrame.BackgroundTransparency = 0.5
-        bgFrame.Parent = confirmGui
-        
-        -- Confirmation frame
-        local confirmFrame = Instance.new("Frame")
-        confirmFrame.Size = UDim2.new(0, 350, 0, 150)
-        confirmFrame.Position = UDim2.new(0.5, -175, 0.5, -75)
-        confirmFrame.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
-        confirmFrame.Parent = confirmGui
-        
-        -- Custom message based on choice
-        local confirmationMessage = ""
-        if choice == "بادینی" then
-            confirmationMessage = "ئەرێ تویئ پشت راستی ژ هەلبژراتنا فی زمانی؟ تو ئێدی نەشێی زمانی بگهوری"
-        else
-            confirmationMessage = "دڵنیایت لە هەڵبژاردنی "..choice.."? (دوای پشتڕاستکردنەوە ناتوانیت بیگۆڕیت)"
-        end
-        
-        -- Message
-        local msg = Instance.new("TextLabel")
-        msg.Size = UDim2.new(1, -20, 0.6, 0)
-        msg.Position = UDim2.new(0, 10, 0, 10)
-        msg.Text = confirmationMessage
-        msg.TextColor3 = Color3.new(1, 1, 1)
-        msg.Font = Enum.Font.SourceSans
-        msg.TextSize = 18
-        msg.TextWrapped = true
-        msg.BackgroundTransparency = 1
-        msg.Parent = confirmFrame
-        
-        -- Yes button
-        local yesBtn = Instance.new("TextButton")
-        yesBtn.Size = UDim2.new(0.4, 0, 0.3, 0)
-        yesBtn.Position = UDim2.new(0.1, 0, 0.65, 0)
-        yesBtn.Text = "بەڵێ"
-        yesBtn.TextColor3 = Color3.new(0, 1, 0)
-        yesBtn.BackgroundColor3 = Color3.fromRGB(0, 50, 0)
-        yesBtn.Font = Enum.Font.SourceSansBold
-        yesBtn.TextSize = 20
-        yesBtn.Parent = confirmFrame
-        
-        -- No button
-        local noBtn = Instance.new("TextButton")
-        noBtn.Size = UDim2.new(0.4, 0, 0.3, 0)
-        noBtn.Position = UDim2.new(0.5, 0, 0.65, 0)
-        noBtn.Text = "نەخێر"
-        noBtn.TextColor3 = Color3.new(1, 0, 0)
-        noBtn.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
-        noBtn.Font = Enum.Font.SourceSansBold
-        noBtn.TextSize = 20
-        noBtn.Parent = confirmFrame
-        
-        -- Button actions
-        yesBtn.MouseButton1Click:Connect(function()
-            -- Save choice permanently
-            saveLanguageChoice(choice)
-            
-            -- Close both GUIs
-            gui:Destroy()
-            confirmGui:Destroy()
-            
-            -- Execute the chosen script
-            if choice == "سورانی" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
-            else
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
-            end
-        end)
-        
-        noBtn.MouseButton1Click:Connect(function()
-            confirmGui:Destroy()
-        end)
-    end
-    
     -- Button actions
     soraniBtn.MouseButton1Click:Connect(function()
-        showConfirmation("سورانی")
+        gui:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
     end)
     
     badiniBtn.MouseButton1Click:Connect(function()
-        showConfirmation("بادینی")
+        gui:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
     end)
 end
 
--- Load saved choice
-local savedChoice = loadLanguageChoice()
-
--- If player hasn't chosen before, show selection menu
-if not savedChoice then
-    createLanguageMenu()
-else
-    -- If choice already made, execute the saved script
-    if savedChoice == "سورانی" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
-    else
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
-    end
-end
+-- Always show language selection menu
+createLanguageMenu()

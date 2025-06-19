@@ -3,7 +3,7 @@ local blockedUsers = {
     "Qween_Rozhe", "rayo_ssrr7", "01KOUR", "paolo_Reko", 
     "ahmad_kurdish001", "Aram_barwari721", "Safa27can",
     "arjankurdi15", "yasr99k", "The_Noobeip", "Armanj_170",
-    "7aydar65", "Ja7far_0901", "HEREANOTHERONe",
+    "7aydar65", "Ja7far_0901", "hhhhdhsho",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
@@ -127,6 +127,7 @@ if checkBlockedUsers() then while true do end end
 
 -- Language Selection System
 local player = game:GetService("Players").LocalPlayer
+local scriptExecuted = false
 
 -- Function to create language selection menu
 local function createLanguageMenu()
@@ -185,15 +186,45 @@ local function createLanguageMenu()
     badiniBtn.TextSize = 20
     badiniBtn.Parent = frame
     
-    -- Button actions
-    soraniBtn.MouseButton1Click:Connect(function()
+    -- Button actions with effects and execution control
+    local function executeScript(url)
+        if scriptExecuted then
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "Kurd Hub",
+                Text = "You already executed the script!",
+                Duration = 3
+            })
+            return
+        end
+        
+        scriptExecuted = true
+        
+        -- Change button colors to white
+        soraniBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        soraniBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+        badiniBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        badiniBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+        
+        -- Button click effect
+        local btn = (url:find("soran") and soraniBtn or badiniBtn)
+        for i = 1, 5 do
+            btn.BackgroundTransparency = i/10
+            wait(0.05)
+        end
+        
+        -- Hide menu
         gui:Destroy()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran"))()
+        
+        -- Load the script
+        loadstring(game:HttpGet(url))()
+    end
+    
+    soraniBtn.MouseButton1Click:Connect(function()
+        executeScript("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
     end)
     
     badiniBtn.MouseButton1Click:Connect(function()
-        gui:Destroy()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini"))()
+        executeScript("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
     end)
 end
 

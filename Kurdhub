@@ -1,5 +1,4 @@
 local gui = Instance.new("ScreenGui")
-😂
 gui.Name = "KurdHubGUI"
 gui.ResetOnSpawn = false
 gui.Parent = game.CoreGui

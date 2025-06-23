@@ -28,7 +28,8 @@ end
 if game.PlaceId == 4924922222 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
     loadGui("https://rawscripts.net/raw/Universal-Script-Fe-play-sound-40621")
-    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Allcopyinfk")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Jlo")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Cloof")
 elseif game.PlaceId == 126884695634066 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Location-grow")

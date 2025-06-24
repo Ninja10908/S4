@@ -3,8 +3,8 @@ local blockedUsers = {
     "Qween_Rozhe", "rayo_ssrr7", "01KOUR", "paolo_Reko", 
     "ahmad_kurdish001", "Aram_barwari721", "Safa27can",
     "arjankurdi15", "yasr99k", "The_Noobeip", "Armanj_170",
-    "7aydar65", "Ja7far_0901", "hhhhdhsho",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
+    "7aydar65", "Ja7far_0901", "MZ1R1_M4",
+    "WhoAmii710", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
     "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
@@ -38,7 +38,7 @@ local function scaryKick(player)
     local message = Instance.new("TextLabel")
     message.Size = UDim2.new(1, 0, 0, 100)
     message.Position = UDim2.new(0, 0, 0.5, -50)
-    message.Text = "☠ YOU ARE BANNED FROM KURD HUB ☠\nTiTok : Jack._.827"
+    message.Text = "YOU ARE BANNED FROM KURD HUB\nReason : Jack Mza\nBand for 1 Year\nTiTok : Jack._.827"
     message.TextColor3 = Color3.new(1, 0, 0)
     message.Font = Enum.Font.Creepster
     message.TextSize = 40
@@ -94,7 +94,7 @@ local function scaryKick(player)
             wait(0.1)
         end
         
-        player:Kick("\n\n☠ YOU HAVE BEEN BANNED FROM KURD HUB! ☠\nCONTACT: jack._.827 ON TIKTOK\n\nIM Waiting For you!!\n")
+        player:Kick("\n\n YOU HAVE BEEN BANNED FROM KURD HUB! \nCONTACT: jack._.827 ON TIKTOK\n\nIM Waiting For you!!\n")
     end)
 end
 

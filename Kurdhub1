@@ -38,7 +38,7 @@ local function scaryKick(player)
     local message = Instance.new("TextLabel")
     message.Size = UDim2.new(1, 0, 0, 100)
     message.Position = UDim2.new(0, 0, 0.5, -50)
-    message.Text = "YOU ARE BANNED FROM KURD HUB\nReason : Jack Mza\nBand for 1 Year\nTiTok : Jack._.827"
+    message.Text = "YOU ARE BANNED FROM KURD HUB\nBaned for 1 Year\n\nTiTok : Jack._.827"
     message.TextColor3 = Color3.new(1, 0, 0)
     message.Font = Enum.Font.Creepster
     message.TextSize = 40

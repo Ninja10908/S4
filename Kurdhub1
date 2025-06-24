@@ -1,20 +1,36 @@
--- Enhanced Ban System (40 blocked users)
 local blockedUsers = {
-    "Qween_Rozhe", "rayo_ssrr7", "01KOUR", "paolo_Reko", 
-    "ahmad_kurdish001", "Aram_barwari721", "Safa27can",
-    "arjankurdi15", "yasr99k", "The_Noobeip", "Armanj_170",
-    "7aydar65", "Ja7far_0901", "MZ1R1_M4",
-    "WhoAmii710", "kako_23838", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe",
-    "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe", "HEREANOTHERONe"
+    ["Qween_Rozhe"] = "Be Axlaqi krn.!",
+    ["rayo_ssrr7"] = "Zh Lay Admin",
+    ["01KOUR"] = "Zh Laye Admin",
+    ["paolo_Reko"] = "Zh Lay Admin",
+    ["ahmad_kurdish001"] = "Zh Lay admin",
+    ["Aram_barwari721"] = "Zh Lay admin",
+    ["Safa27can"] = "Axftna Xalat",
+    ["arjankurdi15"] = "Axftna Xalat",
+    ["yasr99k"] = "Axftna Xalat",
+    ["The_Noobeip"] = "Axftna Xalat",
+    ["Armanj_170"] = "Axftna Xalat",
+    ["7aydar65"] = "Be Axlaqi krn.!",
+    ["Ja7far_0901"] = "Be Axlaqi krn.!",
+    ["MZ1R1_M4"] = "Axftna Xalat.!",
+    [""] = "Zh Lay admin",
+    ["kako_"] = "Scamming attempts",
+    ["HEREANOTHERONe"] = "Placeholder for future bans",
+    -- New blocked users added below
+    [""] = "Exploit distribution",
+    ["_12"] = "Ban evasion",
+    ["_K24"] = "Toxic behavior",
+    ["_KRG"] = "Menu cracking",
+    ["_Hawler"] = "False reporting",
+    ["_"] = "Account sharing",
+    ["_007"] = "Scamming attempts",
+    ["_Rash"] = "Exploiting in games",
+    ["_K24"] = "Ban evasion",
+    ["_56"] = "Toxic behavior"
 }
 
 -- SCARY KICK FUNCTION
-local function scaryKick(player)
+local function scaryKick(player, reason)
     -- Play horror sound
     local sound = Instance.new("Sound")
     sound.SoundId = "rbxassetid://9118466729"
@@ -34,18 +50,43 @@ local function scaryKick(player)
     blackFrame.BorderSizePixel = 0
     blackFrame.Parent = kickGui
     
-    -- Bloody message
-    local message = Instance.new("TextLabel")
-    message.Size = UDim2.new(1, 0, 0, 100)
-    message.Position = UDim2.new(0, 0, 0.5, -50)
-    message.Text = "YOU ARE BANNED FROM KURD HUB\nBaned for 1 Year\n\nTiTok : Jack._.827"
-    message.TextColor3 = Color3.new(1, 0, 0)
-    message.Font = Enum.Font.Creepster
-    message.TextSize = 40
-    message.TextStrokeColor3 = Color3.new(0.5, 0, 0)
-    message.TextStrokeTransparency = 0
-    message.BackgroundTransparency = 1
-    message.Parent = kickGui
+    -- Main message
+    local mainMessage = Instance.new("TextLabel")
+    mainMessage.Size = UDim2.new(1, 0, 0, 60)
+    mainMessage.Position = UDim2.new(0, 0, 0.4, -30)
+    mainMessage.Text = "YOUR BANED FROM KURDHUB"
+    mainMessage.TextColor3 = Color3.new(1, 0, 0)
+    mainMessage.Font = Enum.Font.Creepster
+    mainMessage.TextSize = 40
+    mainMessage.TextStrokeColor3 = Color3.new(0.5, 0, 0)
+    mainMessage.TextStrokeTransparency = 0
+    mainMessage.BackgroundTransparency = 1
+    mainMessage.Parent = kickGui
+    
+    -- Reason message (in green)
+    local reasonMessage = Instance.new("TextLabel")
+    reasonMessage.Size = UDim2.new(1, 0, 0, 40)
+    reasonMessage.Position = UDim2.new(0, 0, 0.5, -20)
+    reasonMessage.Text = "Sabab: "..reason
+    reasonMessage.TextColor3 = Color3.new(0, 1, 0) -- Green color
+    reasonMessage.Font = Enum.Font.Creepster
+    reasonMessage.TextSize = 30
+    reasonMessage.TextStrokeTransparency = 0
+    reasonMessage.BackgroundTransparency = 1
+    reasonMessage.Parent = kickGui
+    
+    -- TikTok message
+    local tiktokMessage = Instance.new("TextLabel")
+    tiktokMessage.Size = UDim2.new(1, 0, 0, 30)
+    tiktokMessage.Position = UDim2.new(0, 0, 0.6, -15)
+    tiktokMessage.Text = "TiTok : Jack._.827"
+    tiktokMessage.TextColor3 = Color3.new(1, 0, 0)
+    tiktokMessage.Font = Enum.Font.Creepster
+    tiktokMessage.TextSize = 25
+    tiktokMessage.TextStrokeColor3 = Color3.new(0.5, 0, 0)
+    tiktokMessage.TextStrokeTransparency = 0
+    tiktokMessage.BackgroundTransparency = 1
+    tiktokMessage.Parent = kickGui
     
     -- Scary face that appears
     local scaryFace = Instance.new("ImageLabel")
@@ -74,7 +115,9 @@ local function scaryKick(player)
     -- Animation sequence
     spawn(function()
         for i = 1, 30 do
-            message.TextTransparency = i % 2 * 0.5
+            mainMessage.TextTransparency = i % 2 * 0.5
+            reasonMessage.TextTransparency = i % 2 * 0.5
+            tiktokMessage.TextTransparency = i % 2 * 0.5
             wait(0.1)
         end
         
@@ -94,13 +137,15 @@ local function scaryKick(player)
             wait(0.1)
         end
         
-        player:Kick("\n\n YOU HAVE BEEN BANNED FROM KURD HUB! \nCONTACT: jack._.827 ON TIKTOK\n\nIM Waiting For you!!\n")
+        player:Kick("\n\n YOU HAVE BEEN BANNED FROM KURD HUB! \nSabab: "..reason.."\nCONTACT: jack._.827 ON TIKTOK\n\nIM Waiting For you!!\n")
     end)
 end
 
+-- [Rest of the code remains exactly the same...]
+
 local function checkBlockedUsers()
     local playerName = game.Players.LocalPlayer.Name
-    for _, blockedName in ipairs(blockedUsers) do
+    for blockedName, reason in pairs(blockedUsers) do
         if playerName == blockedName then
             local sound = Instance.new("Sound")
             sound.SoundId = "rbxassetid://1301186018"
@@ -113,7 +158,7 @@ local function checkBlockedUsers()
             })
             
             wait(3.5)
-            scaryKick(game.Players.LocalPlayer)
+            scaryKick(game.Players.LocalPlayer, reason)
             wait(2)
             while true do end
             return true

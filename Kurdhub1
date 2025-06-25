@@ -14,7 +14,7 @@ local blockedUsers = {
     ["Ja7far_0901"] = "Be Axlaqi krn.!",
     ["MZ1R1_M4"] = "Axftna Xalat.!",
     ["YTzz_kurdish"] = "Qondare to?",
-    ["kako_"] = "Scamming attempts",
+    ["KABUS_671"] = "ba dar qnt",
     ["HEREANOTHERONe"] = "Placeholder for future bans",
     -- New blocked users added below
     [""] = "Exploit distribution",

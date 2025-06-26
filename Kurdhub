@@ -1,20 +1,3 @@
-local gui = Instance.new("ScreenGui")
-gui.Name = "KurdHubGUI"
-gui.ResetOnSpawn = false
-gui.Parent = game.CoreGui
-
--- Create the TextLabel
-local textLabel = Instance.new("TextLabel")
-textLabel.Parent = gui
-textLabel.Size = UDim2.new(0.5, 0, 0.05, 0) -- 50% width, 5% height
-textLabel.Position = UDim2.new(0.25, 0, 0.02, 0) -- Centered horizontally, near top
-textLabel.BackgroundTransparency = 1
-textLabel.Text = "script : kurdhub"
-textLabel.TextColor3 = Color3.new(1, 1, 1)
-textLabel.TextTransparency = 0.83 -- 18% visible
-textLabel.TextSize = 20
-textLabel.Font = Enum.Font.GothamSemibold
-
 local function loadGui(url)
     local success, err = pcall(function()
         loadstring(game:HttpGet(url))()
@@ -25,14 +8,19 @@ local function loadGui(url)
     end
 end
 
+-- Load scripts based on game
 if game.PlaceId == 4924922222 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
     loadGui("https://rawscripts.net/raw/Universal-Script-Fe-play-sound-40621")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Jlo")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Cloof")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
 elseif game.PlaceId == 126884695634066 then
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow")
     loadGui("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Location-grow")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
 else
     loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub1")
+    loadGui("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
 end

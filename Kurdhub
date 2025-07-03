@@ -94,8 +94,6 @@ local function createLanguageMenu()
         
         -- Load all game-specific scripts
         if game.PlaceId == 4924922222 then
-            loadScript("https://rawscripts.net/raw/Universal-Script-Fe-play-sound-40621")
-            loadScript("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Jlo")
             loadScript("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Cloof")
             loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
         elseif game.PlaceId == 126884695634066 then

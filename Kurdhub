@@ -1,3 +1,19 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+-- Services
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
+local success, playerGui = pcall(function()
+    return player:WaitForChild("PlayerGui", 10)
+end)
+if not success or not playerGui then
+    warn("PlayerGui not found.")
+    return
+end
+
+-- Optional Game Whitelist Loader
 local whitelistedGames = {
     [17867929736] = true,
     [133203430649548] = true,
@@ -8,32 +24,31 @@ local whitelistedGames = {
 }
 
 if whitelistedGames[game.PlaceId] then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Repo/refs/heads/main/Copysaw", true))()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Repo/refs/heads/main/Copysaw", true))()
+    end)
 end
 
-local player = game:GetService("Players").LocalPlayer
+-- Track Loaded Scripts
 local scriptExecuted = false
 local loadedScripts = {}
-
 local function loadScript(url)
     if loadedScripts[url] then return end
     loadedScripts[url] = true
-    
-    local success, errorMsg = pcall(function()
-        loadstring(game:HttpGet(url, true))()
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(url, true))()
     end)
-    
     if not success then
-        warn("Failed to load: " .. url)
-        warn(errorMsg)
+        warn("[Error loading]:", url, result)
     end
 end
 
+-- Create Language GUI
 local function createLanguageGUI()
     local gui = Instance.new("ScreenGui")
     gui.Name = "LanguageSelectionGUI"
-    gui.Parent = player:WaitForChild("PlayerGui")
     gui.ResetOnSpawn = false
+    gui.Parent = playerGui
 
     local mainFrame = Instance.new("Frame")
     mainFrame.Size = UDim2.new(0, 300, 0, 200)
@@ -43,7 +58,7 @@ local function createLanguageGUI()
 
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, 0, 0, 40)
-    titleLabel.Text = "هەڵبژاردنی زمان" -- "Language Selection" in Kurdish
+    titleLabel.Text = "هەڵبژاردنی زمان"
     titleLabel.TextColor3 = Color3.new(1, 1, 1)
     titleLabel.Font = Enum.Font.SourceSansBold
     titleLabel.TextSize = 24
@@ -53,7 +68,7 @@ local function createLanguageGUI()
     local instructionLabel = Instance.new("TextLabel")
     instructionLabel.Size = UDim2.new(1, -20, 0, 40)
     instructionLabel.Position = UDim2.new(0, 10, 0, 40)
-    instructionLabel.Text = "تکایە زمانێک هەڵبژێرە:" -- "Please choose a language:" in Kurdish
+    instructionLabel.Text = "تکایە زمانێک هەڵبژێرە:"
     instructionLabel.TextColor3 = Color3.new(1, 1, 1)
     instructionLabel.Font = Enum.Font.SourceSans
     instructionLabel.TextSize = 18
@@ -63,7 +78,7 @@ local function createLanguageGUI()
     local soraniButton = Instance.new("TextButton")
     soraniButton.Size = UDim2.new(0.4, 0, 0, 40)
     soraniButton.Position = UDim2.new(0.1, 0, 0.5, 0)
-    soraniButton.Text = "سورانی" -- "Sorani" (Kurdish dialect)
+    soraniButton.Text = "سورانی"
     soraniButton.TextColor3 = Color3.new(1, 1, 1)
     soraniButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
     soraniButton.Font = Enum.Font.SourceSansBold
@@ -73,32 +88,34 @@ local function createLanguageGUI()
     local badiniButton = Instance.new("TextButton")
     badiniButton.Size = UDim2.new(0.4, 0, 0, 40)
     badiniButton.Position = UDim2.new(0.5, 0, 0.5, 0)
-    badiniButton.Text = "بادینی" -- "Badini" (Kurdish dialect)
+    badiniButton.Text = "بادینی"
     badiniButton.TextColor3 = Color3.new(1, 1, 1)
     badiniButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
     badiniButton.Font = Enum.Font.SourceSansBold
     badiniButton.TextSize = 20
     badiniButton.Parent = mainFrame
 
+    -- Execution Logic
     local function executeScripts(scriptUrl)
         if scriptExecuted then return end
         scriptExecuted = true
-        
+
+        -- Flash Button Visual
         soraniButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         soraniButton.TextColor3 = Color3.fromRGB(0, 0, 0)
         badiniButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         badiniButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-        
-        local selectedButton = scriptUrl:find("soran") and soraniButton or badiniButton
-        
+
+        local selected = scriptUrl:find("soran") and soraniButton or badiniButton
         for i = 1, 5 do
-            selectedButton.BackgroundTransparency = i / 10
+            selected.BackgroundTransparency = i / 10
             task.wait(0.05)
         end
-        
+
         gui:Destroy()
         loadScript(scriptUrl)
-        
+
+        -- Extra Game-Specific Scripts
         if game.PlaceId == 4924922222 then
             loadScript("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Cloof")
             loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
@@ -115,7 +132,7 @@ local function createLanguageGUI()
     soraniButton.MouseButton1Click:Connect(function()
         executeScripts("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
     end)
-    
+
     badiniButton.MouseButton1Click:Connect(function()
         executeScripts("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
     end)

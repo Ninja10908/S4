@@ -2,16 +2,29 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-if game.PlaceId == 109983668079237 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel", true))()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger", true))()
-    return -- stop here
-end
-
--- 🔽 Your full script continues here if not that game ID
 -- Services
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
+
+-- Special case for game ID 109983668079237
+if game.PlaceId == 109983668079237 then
+    local success1, result1 = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel", true))()
+    end)
+    local success2, result2 = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger", true))()
+    end)
+    
+    if not success1 then
+        warn("Failed to load Stel script:", result1)
+    end
+    if not success2 then
+        warn("Failed to load Warger script:", result2)
+    end
+    return
+end
+
+-- Wait for PlayerGui
 local success, playerGui = pcall(function()
     return player:WaitForChild("PlayerGui", 10)
 end)
@@ -34,7 +47,7 @@ function loadScript(url)
     end
 end
 
--- Optional Game Whitelist Loader (Extra scripts for specific maps)
+-- Optional Game Whitelist Loader
 local function loadExtraByPlaceId()
     local pid = game.PlaceId
     if pid == 4924922222 then
@@ -66,7 +79,7 @@ pcall(function()
     end
 end)
 
--- Create GUI
+-- Create GUI with improved Sorani/Badini options
 local function createLanguageGUI()
     local gui = Instance.new("ScreenGui")
     gui.Name = "LanguageSelectionGUI"
@@ -74,15 +87,15 @@ local function createLanguageGUI()
     gui.Parent = playerGui
 
     local mainFrame = Instance.new("Frame")
-    mainFrame.Size = UDim2.new(0, 300, 0, 200)
-    mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    mainFrame.Size = UDim2.new(0, 350, 0, 220)  -- Slightly larger
+    mainFrame.Position = UDim2.new(0.5, -175, 0.5, -110)
     mainFrame.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
     mainFrame.BorderSizePixel = 0
     mainFrame.Parent = gui
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, 0, 0, 40)
-    titleLabel.Text = "هەڵبژاردنی زمان"
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Text = "Tiktok: jack._.827"
     titleLabel.TextColor3 = Color3.new(1, 1, 1)
     titleLabel.Font = Enum.Font.SourceSansBold
     titleLabel.TextSize = 24
@@ -91,53 +104,67 @@ local function createLanguageGUI()
     titleLabel.Parent = mainFrame
 
     local instructionLabel = Instance.new("TextLabel")
-    instructionLabel.Size = UDim2.new(1, -20, 0, 40)
-    instructionLabel.Position = UDim2.new(0, 10, 0, 40)
-    instructionLabel.Text = "تکایە زمانێک هەڵبژێرە:"
+    instructionLabel.Size = UDim2.new(1, -20, 0, 50)
+    instructionLabel.Position = UDim2.new(0, 10, 0, 50)
+    instructionLabel.Text = "زاراوێک هەڵبژێرە:"
     instructionLabel.TextColor3 = Color3.new(1, 1, 1)
     instructionLabel.Font = Enum.Font.SourceSans
     instructionLabel.TextSize = 18
     instructionLabel.BackgroundTransparency = 1
     instructionLabel.Parent = mainFrame
 
+    local buttonContainer = Instance.new("Frame")
+    buttonContainer.Size = UDim2.new(1, -40, 0, 80)
+    buttonContainer.Position = UDim2.new(0, 20, 0, 110)
+    buttonContainer.BackgroundTransparency = 1
+    buttonContainer.Parent = mainFrame
+
     local soraniButton = Instance.new("TextButton")
-    soraniButton.Size = UDim2.new(0.4, 0, 0, 40)
-    soraniButton.Position = UDim2.new(0.1, 0, 0.5, 0)
+    soraniButton.Size = UDim2.new(0.50, 0, 0.5, 0)
+    soraniButton.Position = UDim2.new(0, 0, 0, 0)
     soraniButton.Text = "سورانی"
     soraniButton.TextColor3 = Color3.new(1, 1, 1)
     soraniButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
     soraniButton.Font = Enum.Font.SourceSansBold
     soraniButton.TextSize = 20
-    soraniButton.Parent = mainFrame
+    soraniButton.TextWrapped = true
+    soraniButton.Parent = buttonContainer
 
     local badiniButton = Instance.new("TextButton")
-    badiniButton.Size = UDim2.new(0.4, 0, 0, 40)
-    badiniButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+    badiniButton.Size = UDim2.new(0.50, 0, 0.5, 0)
+    badiniButton.Position = UDim2.new(0.55, 0, 0, 0)
     badiniButton.Text = "بادینی"
     badiniButton.TextColor3 = Color3.new(1, 1, 1)
     badiniButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
     badiniButton.Font = Enum.Font.SourceSansBold
     badiniButton.TextSize = 20
-    badiniButton.Parent = mainFrame
+    badiniButton.TextWrapped = true
+    badiniButton.Parent = buttonContainer
 
     local function executeScripts(scriptUrl)
         if scriptExecuted then return end
         scriptExecuted = true
 
-        soraniButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        soraniButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-        badiniButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        badiniButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-
+        -- Visual feedback
         local selected = scriptUrl:find("soran") and soraniButton or badiniButton
-        for i = 1, 5 do
-            selected.BackgroundTransparency = i / 10
+        selected.BackgroundColor3 = Color3.fromRGB(0, 100, 0)
+        
+        for i = 1, 10 do
+            selected.BackgroundTransparency = i / 20
             task.wait(0.05)
         end
 
         gui:Destroy()
-        loadScript(scriptUrl)
-        loadExtraByPlaceId()
+        
+        -- Load scripts
+        local success, err = pcall(function()
+            loadScript(scriptUrl)
+            loadExtraByPlaceId()
+        end)
+        
+        if not success then
+            warn("Failed to execute scripts:", err)
+        end
     end
 
     soraniButton.MouseButton1Click:Connect(function()

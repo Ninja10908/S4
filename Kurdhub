@@ -7,7 +7,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
 -- Special case for game ID 109983668079237
-if game.PlaceId == 109983668079237 then
+if game.PlaceId == 109983668079237 or game.PlaceId == 128762245270197 or game.PlaceId == 96342491571673 then
     local success1, result1 = pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel", true))()
     end)

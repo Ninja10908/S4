@@ -1,14 +1,34 @@
--- jack 827
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
--- Special case for game ID 109983668079237
-if game.PlaceId == 109983668079237 or game.PlaceId == 128762245270197 or game.PlaceId == 96342491571673 then
+-- Track Loaded Scripts
+local scriptExecuted = false
+local loadedScripts = {}
+local function loadScript(url)
+    if loadedScripts[url] then return end
+    loadedScripts[url] = true
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(url, true))()
+    end)
+    if not success then
+        warn("[Failed to load]:", url, result)
+    end
+end
+
+-- Check for special place IDs first
+local pid = game.PlaceId
+local specialPlaceIds = {
+    [109983668079237] = true,
+    [128762245270197] = true,
+    [96342491571673] = true
+}
+
+if specialPlaceIds[pid] then
     local success1, result1 = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel", true))()
+        loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel")
     end)
     local success2, result2 = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger", true))()
+        loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
     end)
     
     if not success1 then
@@ -29,53 +49,47 @@ if not success or not playerGui then
     return
 end
 
--- Track Loaded Scripts
-local scriptExecuted = false
-local loadedScripts = {}
-function loadScript(url)
-    if loadedScripts[url] then return end
-    loadedScripts[url] = true
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet(url, true))()
-    end)
-    if not success then
-        warn("[Failed to load]:", url, result)
-    end
-end
-
--- Optional Game Whitelist Loader
-local function loadExtraByPlaceId()
-    local pid = game.PlaceId
-    if pid == 4924922222 then
-        loadScript("https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Cloof")
-        loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
-        loadScript("https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/Lastco")
-    elseif pid == 126884695634066 then
-        loadScript("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow")
-        loadScript("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Location-grow")
-        loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
-    else
-        loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
-    end
-end
-
--- Load core script if in these specific maps
-pcall(function()
-    local whitelistedGames = {
-        [17867929736] = true,
-        [133203430649548] = true,
-        [119468226440711] = true,
-        [17600782947] = true,
-        [18376355901] = true,
-        [132703178133744] = true
+-- PlaceID-specific script loader
+local function loadPlaceSpecificScripts()
+    local placeScripts = {
+        [4924922222] = {
+            "https://raw.githubusercontent.com/Ninja10908/Tool/refs/heads/main/Cloof",
+            "https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger",
+            "https://raw.githubusercontent.com/Ninja10908/DNS/refs/heads/main/Lastco"
+        },
+        [126884695634066] = {
+            "https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow",
+            "https://pastefy.app/vHFjABov/raw"
+        }
     }
-
-    if whitelistedGames[game.PlaceId] then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Repo/refs/heads/main/Copysaw", true))()
+    
+    if placeScripts[pid] then
+        for _, url in ipairs(placeScripts[pid]) do
+            loadScript(url)
+        end
+        return true -- Indicate we handled this place ID
     end
-end)
+    
+    -- Default case
+    loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
+    return false
+end
 
--- Create GUI with improved Sorani/Badini options
+-- Whitelisted games loader
+local whitelistedGames = {
+    [17867929736] = true,
+    [133203430649548] = true,
+    [119468226440711] = true,
+    [17600782947] = true,
+    [18376355901] = true,
+    [132703178133744] = true
+}
+
+if whitelistedGames[pid] then
+    loadScript("https://raw.githubusercontent.com/Ninja10908/Repo/refs/heads/main/Copysaw")
+end
+
+-- Language GUI (only show if not a special place ID)
 local function createLanguageGUI()
     local gui = Instance.new("ScreenGui")
     gui.Name = "LanguageSelectionGUI"
@@ -83,7 +97,7 @@ local function createLanguageGUI()
     gui.Parent = playerGui
 
     local mainFrame = Instance.new("Frame")
-    mainFrame.Size = UDim2.new(0, 350, 0, 220)  -- Slightly larger
+    mainFrame.Size = UDim2.new(0, 350, 0, 220)
     mainFrame.Position = UDim2.new(0.5, -175, 0.5, -110)
     mainFrame.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
     mainFrame.BorderSizePixel = 0
@@ -102,7 +116,7 @@ local function createLanguageGUI()
     local instructionLabel = Instance.new("TextLabel")
     instructionLabel.Size = UDim2.new(1, -20, 0, 50)
     instructionLabel.Position = UDim2.new(0, 10, 0, 50)
-    instructionLabel.Text = "زاراوێک هەڵبژێرە:"
+    instructionLabel.Text = "زاراوێک هەڵبژێرە"
     instructionLabel.TextColor3 = Color3.new(1, 1, 1)
     instructionLabel.Font = Enum.Font.SourceSans
     instructionLabel.TextSize = 18
@@ -137,11 +151,10 @@ local function createLanguageGUI()
     badiniButton.TextWrapped = true
     badiniButton.Parent = buttonContainer
 
-    local function executeScripts(scriptUrl)
+    local function executeScript(scriptUrl)
         if scriptExecuted then return end
         scriptExecuted = true
 
-        -- Visual feedback
         local selected = scriptUrl:find("soran") and soraniButton or badiniButton
         selected.BackgroundColor3 = Color3.fromRGB(0, 100, 0)
         
@@ -151,25 +164,19 @@ local function createLanguageGUI()
         end
 
         gui:Destroy()
-        
-        -- Load scripts
-        local success, err = pcall(function()
-            loadScript(scriptUrl)
-            loadExtraByPlaceId()
-        end)
-        
-        if not success then
-            warn("Failed to execute scripts:", err)
-        end
+        loadScript(scriptUrl)
     end
 
     soraniButton.MouseButton1Click:Connect(function()
-        executeScripts("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
+        executeScript("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.soran")
     end)
 
     badiniButton.MouseButton1Click:Connect(function()
-        executeScripts("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
+        executeScript("https://raw.githubusercontent.com/Ninja10908/Tool/main/K.badini")
     end)
 end
 
-createLanguageGUI()
+-- Main execution flow
+if not loadPlaceSpecificScripts() then
+    createLanguageGUI()
+end

@@ -1,3 +1,12 @@
+local whitelistedGames = {
+    [17867929736] = true,
+    [133203430649548] = true,
+    [119468226440711] = true,
+    [17600782947] = true,
+    [18376355901] = true,
+    [132703178133744] = true
+}
+
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
@@ -69,26 +78,15 @@ local function loadPlaceSpecificScripts()
         return true -- Indicate we handled this place ID
     end
     
-    -- Default case
-    loadScript("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Warger")
-    return false
+    return false -- No specific scripts for this place ID
 end
 
 -- Whitelisted games loader
-local whitelistedGames = {
-    [17867929736] = true,
-    [133203430649548] = true,
-    [119468226440711] = true,
-    [17600782947] = true,
-    [18376355901] = true,
-    [132703178133744] = true
-}
-
 if whitelistedGames[pid] then
     loadScript("https://raw.githubusercontent.com/Ninja10908/Repo/refs/heads/main/Copysaw")
 end
 
--- Language GUI (only show if not a special place ID)
+-- Language GUI (show for whitelisted games and games without specific scripts)
 local function createLanguageGUI()
     local gui = Instance.new("ScreenGui")
     gui.Name = "LanguageSelectionGUI"
@@ -176,6 +174,9 @@ local function createLanguageGUI()
 end
 
 -- Main execution flow
-if not loadPlaceSpecificScripts() then
+local hasSpecificScripts = loadPlaceSpecificScripts()
+
+-- Show language GUI for whitelisted games OR games without specific scripts
+if whitelistedGames[pid] or not hasSpecificScripts then
     createLanguageGUI()
 end

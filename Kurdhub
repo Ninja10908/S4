@@ -1,9 +1,11 @@
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Kurd hub",
-    Text = "For ( Grow a garden ) only",
-    Duration = 10
-})
-
 if game.PlaceId == 126884695634066 then
+    
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow"))()
+else
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Kurd hub",
+        Text = "For ( Grow a garden ) only",
+        Duration = 10
+    })
 end

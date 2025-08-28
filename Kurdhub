@@ -1,11 +1,14 @@
-if game.PlaceId == 126884695634066 then
-    
+local gameId = game.GameId
+
+if gameId == 109983668079237 or gameId == 96342491571673 or gameId == 128762245270197 then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel"))()
+elseif gameId == 126884695634066 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow"))()
 else
-    
+    -- Send notification for other game IDs
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Kurd hub",
-        Text = "For ( Grow a garden ) only",
-        Duration = 10
+        Title = "Kurdhub",
+        Duration = 10,
+        Text = "grow a garden \n steal a brainrot"
     })
 end

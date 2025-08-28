@@ -1,14 +1,17 @@
-local gameId = game.GameId
+local placeId = game.PlaceId
+local http = game:HttpGet
+local load = loadstring
 
-if gameId == 109983668079237 or gameId == 96342491571673 or gameId == 128762245270197 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel"))()
-elseif gameId == 126884695634066 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow"))()
+if placeId == 109983668079237 or placeId == 96342491571673 or placeId == 128762245270197 then
+    load(http("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel"))()
+elseif placeId == 126884695634066 then
+    load(http("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow"))()
 else
-    -- Send notification for other game IDs
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Kurdhub",
-        Duration = 10,
-        Text = "grow a garden \n steal a brainrot"
-    })
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Kurdhub",
+            Duration = 10,
+            Text = "grow a garden \n steal a brainrot"
+        })
+    end)
 end

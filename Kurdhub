@@ -1,12 +1,11 @@
 local placeId = game.PlaceId
-local http = game:HttpGet
-local load = loadstring
 
 if placeId == 109983668079237 or placeId == 96342491571673 or placeId == 128762245270197 then
-    load(http("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Stel"))()
 elseif placeId == 126884695634066 then
-    load(http("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/Brok/refs/heads/main/Main-grow"))()
 else
+    -- Notification if wrong game
     pcall(function()
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Kurdhub",

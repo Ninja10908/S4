@@ -1,0 +1,123 @@
+local player = game.Players.LocalPlayer
+local runService = game:GetService("RunService")
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "JackUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+local floorButton = Instance.new("TextButton")
+floorButton.Size = UDim2.new(0, 50, 0, 28)
+floorButton.Position = UDim2.new(1, -80, 0, 55)
+floorButton.AnchorPoint = Vector2.new(0, 0)
+floorButton.BackgroundColor3 = Color3.fromRGB(220, 20, 60)
+floorButton.Text = "Floor"
+floorButton.Font = Enum.Font.SourceSans
+floorButton.TextSize = 16
+floorButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+floorButton.AutoButtonColor = false
+floorButton.Parent = screenGui
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 6)
+corner.Parent = floorButton
+local NoClipCamera = {connection = nil}
+function NoClipCamera:Toggle(boolean)
+    if boolean and not self.connection then
+        player.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
+        self.connection = player.CharacterAdded:Connect(function(character)
+            player.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
+        end)
+    else
+        if self.connection then
+            self.connection:Disconnect()
+            self.connection = nil
+        end
+        player.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
+    end
+end
+local platform, platformConn
+local active, isRising = false, false
+local RISE_SPEED = 15
+local equippedBat = nil
+local preventUnequip = false
+local function equipBat()
+    local character = player.Character
+    local backpack = player:WaitForChild("Backpack")
+    local bat = backpack:FindFirstChild("Bat") or (character and character:FindFirstChild("Bat"))
+    if bat then
+        character:WaitForChild("Humanoid"):EquipTool(bat)
+        equippedBat = bat
+        preventUnequip = true
+    end
+end
+local function unequipBat()
+    if equippedBat then
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid and preventUnequip == false then
+            humanoid:UnequipTools()
+            equippedBat = nil
+        end
+    end
+end
+game:GetService("RunService").RenderStepped:Connect(function()
+    if active and equippedBat and player.Character then
+        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid and humanoid:FindFirstChildOfClass("Tool") ~= equippedBat then
+            humanoid:EquipTool(equippedBat)
+        end
+    end
+end)
+local function destroyPlatform()
+    if platform then platform:Destroy() platform=nil end
+    active=false isRising=false
+    preventUnequip = false
+    equippedBat = nil
+    if platformConn then platformConn:Disconnect() platformConn=nil end
+    floorButton.BackgroundColor3 = Color3.fromRGB(220,20,60)
+    NoClipCamera:Toggle(false)
+end
+local function canRise()
+    if not platform then return false end
+    local origin = platform.Position + Vector3.new(0, platform.Size.Y/2,0)
+    local direction = Vector3.new(0,2,0)
+    local rayParams = RaycastParams.new()
+    rayParams.FilterDescendantsInstances = {platform, player.Character}
+    rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+    return not workspace:Raycast(origin,direction,rayParams)
+end
+local function setup3rdFloor(character)
+    local root = character:WaitForChild("HumanoidRootPart")
+    floorButton.MouseButton1Click:Connect(function()
+        active = not active
+        NoClipCamera:Toggle(active)
+        if active then
+            floorButton.BackgroundColor3 = Color3.fromRGB(0,170,0)
+            equipBat()
+            platform = Instance.new("Part")
+            platform.Size = Vector3.new(6,0.5,6)
+            platform.Anchored=true
+            platform.CanCollide=true
+            platform.Transparency=0
+            platform.Material=Enum.Material.Plastic
+            platform.Color=Color3.fromRGB(255,200,0)
+            platform.Position=root.Position-Vector3.new(0, root.Size.Y/2 + platform.Size.Y/2, 0)
+            platform.Parent = workspace
+            isRising=true
+            platformConn = runService.Heartbeat:Connect(function(dt)
+                if platform and active then
+                    local cur = platform.Position
+                    local newXZ = Vector3.new(root.Position.X, cur.Y, root.Position.Z)
+                    if isRising and canRise() then
+                        platform.Position = newXZ + Vector3.new(0, dt*RISE_SPEED,0)
+                    else
+                        isRising=false
+                        platform.Position = newXZ
+                    end
+                end
+            end)
+        else
+            destroyPlatform()
+        end
+    end)
+    character:WaitForChild("Humanoid").Died:Connect(destroyPlatform)
+end
+if player.Character then setup3rdFloor(player.Character) end
+player.CharacterAdded:Connect(setup3rdFloor)

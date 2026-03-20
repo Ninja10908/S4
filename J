@@ -1,1 +1,8 @@
-b
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+player.PlayerGui:SetCore("SendNotification", {
+    Title = "jack 827",
+    Text = "Working on it",
+    Duration = 5
+})

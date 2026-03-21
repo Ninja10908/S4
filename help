@@ -1,150 +1,136 @@
-local Pl = game:GetService("Players")
-local Rs = game:GetService("RunService")
-local Ws = workspace
-local Me = Pl.LocalPlayer
-local plat = nil
-local conn = nil
-local H_OFF = 10.2
-local R_SPD = 18
-local act = false
-local btn = nil
-local sfGui = nil
-
+local Pl=game:GetService("Players")
+local Rs=game:GetService("RunService")
+local Ws=workspace
+local Me=Pl.LocalPlayer
+local plat=nil
+local conn=nil
+local H_OFF=10.2
+local R_SPD=18
+local act=false
+local btn=nil
+local sfGui=nil
 local function kill()
-    if plat then
-        plat:Destroy()
-        plat = nil
-    end
-    if conn then
-        conn:Disconnect()
-        conn = nil
-    end
+if plat then
+plat:Destroy()
+plat=nil
 end
-
+if conn then
+conn:Disconnect()
+conn=nil
+end
+end
 local function spawn()
-    if plat then
-        kill()
-        return
-    end
-    local c = Me.Character
-    local r = c and c:FindFirstChild("HumanoidRootPart")
-    if not r then return end
-    
-    plat = Instance.new("Part")
-    plat.Name = "jack"
-    plat.Size = Vector3.new(4, 0.5, 4)
-    plat.Anchored = true
-    plat.CanCollide = true
-    plat.Material = Enum.Material.SmoothPlastic
-    plat.Color = Color3.new(1, 1, 1)
-    plat.Position = r.Position - Vector3.new(0, 3.5, 0)
-    plat.Parent = Ws
-    
-    conn = Rs.Heartbeat:Connect(function(dt)
-        if plat and c and r then
-            local p = RaycastParams.new()
-            p.FilterDescendantsInstances = {c, plat}
-            p.FilterType = Enum.RaycastFilterType.Exclude
-            
-            local ray = Ws:Raycast(r.Position, Vector3.new(0, -1000, 0), p)
-            if ray then
-                local ty = ray.Position.Y + H_OFF
-                local cy = plat.Position.Y
-                local ny = cy < ty and math.min(cy + (R_SPD * dt), ty) or ty
-                plat.Position = Vector3.new(r.Position.X, ny, r.Position.Z)
-            end
-        end
-    end)
+if plat then
+kill()
+return
 end
-
+local c=Me.Character
+local r=c and c:FindFirstChild("HumanoidRootPart")
+if not r then return end
+plat=Instance.new("Part")
+plat.Name="jack"
+plat.Size=Vector3.new(4,0.5,4)
+plat.Anchored=true
+plat.CanCollide=true
+plat.Material=Enum.Material.SmoothPlastic
+plat.Color=Color3.new(1,1,1)
+plat.Position=r.Position - Vector3.new(0,3.5,0)
+plat.Parent=Ws
+conn=Rs.Heartbeat:Connect(function(dt)
+if plat and c and r then
+local p=RaycastParams.new()
+p.FilterDescendantsInstances={c,plat}
+p.FilterType=Enum.RaycastFilterType.Exclude
+local ray=Ws:Raycast(r.Position,Vector3.new(0,-1000,0),p)
+if ray then
+local ty=ray.Position.Y + H_OFF
+local cy=plat.Position.Y
+local ny=cy < ty and math.min(cy + (R_SPD * dt),ty) or ty
+plat.Position=Vector3.new(r.Position.X,ny,r.Position.Z)
+end
+end
+end)
+end
 local function bat(e)
-    local c = Me.Character
-    if not c then return end
-    local h = c:FindFirstChild("Humanoid")
-    if not h then return end
-    
-    local t = nil
-    for _, v in c:GetChildren() do
-        if v:IsA("Tool") and v.Name:lower():find("bat") then
-            t = v
-            break
-        end
-    end
-    
-    if not t then
-        for _, v in Me.Backpack:GetChildren() do
-            if v:IsA("Tool") and v.Name:lower():find("bat") then
-                t = v
-                break
-            end
-        end
-    end
-    
-    if t then
-        if e then
-            h:EquipTool(t)
-        else
-            t.Parent = Me.Backpack
-        end
-    end
+local c=Me.Character
+if not c then return end
+local h=c:FindFirstChild("Humanoid")
+if not h then return end
+local t=nil
+for _,v in c:GetChildren() do
+if v:IsA("Tool") and v.Name:lower():find("bat") then
+t=v
+break
 end
-
+end
+if not t then
+for _,v in Me.Backpack:GetChildren() do
+if v:IsA("Tool") and v.Name:lower():find("bat") then
+t=v
+break
+end
+end
+end
+if t then
+if e then
+h:EquipTool(t)
+else
+t.Parent=Me.Backpack
+end
+end
+end
 -- Create GUI
-sfGui = Instance.new("ScreenGui")
-sfGui.Name = "SF_G"
-sfGui.ResetOnSpawn = false
-
-local s, err = pcall(function()
-    sfGui.Parent = game:GetService("CoreGui")
+sfGui=Instance.new("ScreenGui")
+sfGui.Name="SF_G"
+sfGui.ResetOnSpawn=false
+local s,err=pcall(function()
+sfGui.Parent=game:GetService("CoreGui")
 end)
 if not s then
-    sfGui.Parent = Me:WaitForChild("PlayerGui")
+sfGui.Parent=Me:WaitForChild("PlayerGui")
 end
-
-btn = Instance.new("TextButton", sfGui)
-btn.Size = UDim2.new(0, 70, 0, 30)
-btn.Position = UDim2.new(1, -20, 0.5, -60)
-btn.AnchorPoint = Vector2.new(1, 0.5)
-btn.Text = "Steal Floor"
-btn.BackgroundColor3 = Color3.new(0, 0, 0)
-btn.TextColor3 = Color3.new(1, 1, 1)
-btn.Font = Enum.Font.GothamBold
-btn.TextSize = 14
-Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
-
+btn=Instance.new("TextButton",sfGui)
+btn.Size=UDim2.new(0,70,0,30)
+btn.Position=UDim2.new(1,-20,0.5,-60)
+btn.AnchorPoint=Vector2.new(1,0.5)
+btn.Text="Steal Floor"
+btn.BackgroundColor3=Color3.new(0,0,0)
+btn.TextColor3=Color3.new(1,1,1)
+btn.Font=Enum.Font.GothamBold
+btn.TextSize=14
+Instance.new("UICorner",btn).CornerRadius=UDim.new(0,6)
 btn.MouseButton1Click:Connect(function()
-    act = not act
-    if act then
-        btn.BackgroundColor3 = Color3.new(0, 1, 0)
-        spawn()
-        bat(true)
-    else
-        btn.BackgroundColor3 = Color3.new(0, 0, 0)
-        kill()
-        bat(false)
-    end
+act=not act
+if act then
+btn.BackgroundColor3=Color3.new(0,1,0)
+spawn()
+bat(true)
+else
+btn.BackgroundColor3=Color3.new(0,0,0)
+kill()
+bat(false)
+end
 end)
-
 Me.CharacterAdded:Connect(function(c)
-    c:WaitForChild("Humanoid").Died:Connect(function()
-        kill()
-        if act then
-            act = false
-            if btn then
-                btn.BackgroundColor3 = Color3.new(0, 0, 0)
-            end
-        end
-    end)
+c:WaitForChild("Humanoid").Died:Connect(function()
+kill()
+if act then
+act=false
+if btn then
+btn.BackgroundColor3=Color3.new(0,0,0)
+end
+end
 end)
-sfCl = function()
-    kill()
-    if sfGui and sfGui.Parent then
-        pcall(function()
-            sfGui:Destroy()
-        end)
-    end
-    bat(false)
-    act = false
-    btn = nil
-    sfGui = nil
+end)
+sfCl=function()
+kill()
+if sfGui and sfGui.Parent then
+pcall(function()
+sfGui:Destroy()
+end)
+end
+bat(false)
+act=false
+btn=nil
+sfGui=nil
 end

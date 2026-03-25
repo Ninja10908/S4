@@ -1,0 +1,367 @@
+local UILibrary={}
+local Players=game:GetService("Players")
+local TweenService=game:GetService("TweenService")
+local UserInputService=game:GetService("UserInputService")
+local LocalPlayer=Players.LocalPlayer
+local THEME={
+Background=Color3.fromRGB(15,17,24),Secondary=Color3.fromRGB(22,25,35),Accent=Color3.fromRGB(200,60,60),Text=Color3.fromRGB(255,255,255),TextSecondary=Color3.fromRGB(180,200,255),Button=Color3.fromRGB(28,32,45),Hover=Color3.fromRGB(35,37,52),Active=Color3.fromRGB(40,30,35),Stroke=Color3.fromRGB(100,50,50)
+}
+function UILibrary:New(name,keybind,toggleButton)
+local self=setmetatable({},{__index=UILibrary})
+self.Name=name or "UI"
+self.Keybind=keybind or Enum.KeyCode.RightControl
+self.ToggleButton=toggleButton ~=false
+self.Gui=nil
+self.MainFrame=nil
+self.TabFrames={}
+self.TabList={}
+self.CurrentTab=nil
+self.Visible=false
+self:Create()
+return self
+end
+function UILibrary:Create()
+self.Gui=Instance.new('ScreenGui')
+self.Gui.Name=self.Name .. 'GUI'
+self.Gui.ResetOnSpawn=false
+self.Gui.Parent=LocalPlayer:WaitForChild("PlayerGui")
+self.Gui.IgnoreGuiInset=true
+self.Gui.DisplayOrder=999999999
+if self.ToggleButton then
+local khButton=Instance.new('TextButton')
+khButton.Name='KHButton'
+khButton.Size=UDim2.new(0,50,0,50)
+khButton.Position=UDim2.new(0,20,0,87)
+khButton.BackgroundColor3=Color3.fromRGB(0,0,0)
+khButton.Text=string.sub(self.Name,1,2):upper()
+khButton.TextColor3=Color3.fromRGB(255,255,255)
+khButton.TextSize=24
+khButton.Font=Enum.Font.GothamBold
+khButton.AutoButtonColor=true
+khButton.Parent=self.Gui
+khButton.ZIndex=999999999
+local khStroke=Instance.new('UIStroke',khButton)
+khStroke.Thickness=2
+khStroke.Color=THEME.Accent
+khStroke.Transparency=0
+local khCorner=Instance.new('UICorner',khButton)
+khCorner.CornerRadius=UDim.new(0,6)
+khButton.MouseButton1Click:Connect(function()
+self:Toggle()
+end)
+self.ToggleBtn=khButton
+end
+self.MainFrame=Instance.new('Frame')
+self.MainFrame.Name='MainFr'
+self.MainFrame.Size=UDim2.new(0,450,0,320)
+self.MainFrame.Position=UDim2.new(0.5,0,0.5,0)
+self.MainFrame.AnchorPoint=Vector2.new(0.5,0.5)
+self.MainFrame.BackgroundColor3=THEME.Background
+self.MainFrame.BorderSizePixel=0
+self.MainFrame.Parent=self.Gui
+self.MainFrame.Active=true
+self.MainFrame.Draggable=true
+self.MainFrame.Visible=false
+local mainCor=Instance.new('UICorner',self.MainFrame)
+mainCor.CornerRadius=UDim.new(0,16)
+local mainStr=Instance.new('UIStroke',self.MainFrame)
+mainStr.Thickness=2
+mainStr.Color=THEME.Accent
+mainStr.Transparency=0
+local mainGlw=Instance.new('ImageLabel',self.MainFrame)
+mainGlw.Size=UDim2.new(1,16,1,16)
+mainGlw.Position=UDim2.new(0,-8,0,-8)
+mainGlw.BackgroundTransparency=1
+mainGlw.Image="rbxassetid://8992234291"
+mainGlw.ImageColor3=THEME.Accent
+mainGlw.ImageTransparency=0.9
+mainGlw.ScaleType=Enum.ScaleType.Slice
+mainGlw.SliceCenter=Rect.new(100,100,100,100)
+mainGlw.SliceScale=0.03
+mainGlw.ZIndex=-1
+local topBar=Instance.new('Frame',self.MainFrame)
+topBar.Size=UDim2.new(1,0,0,50)
+topBar.Position=UDim2.new(0,0,0,0)
+topBar.BackgroundColor3=THEME.Secondary
+topBar.BorderSizePixel=0
+local topCor=Instance.new('UICorner',topBar)
+topCor.CornerRadius=UDim.new(0,16)
+local topStr=Instance.new('UIStroke',topBar)
+topStr.Thickness=1
+topStr.Color=THEME.Stroke
+topStr.Transparency=0.3
+local logoFr=Instance.new('Frame',topBar)
+logoFr.Size=UDim2.new(0,40,0,40)
+logoFr.Position=UDim2.new(0,10,0.5,-20)
+logoFr.BackgroundColor3=Color3.fromRGB(0,0,0)
+logoFr.BorderSizePixel=0
+local logoCor=Instance.new('UICorner',logoFr)
+logoCor.CornerRadius=UDim.new(1,0)
+local logoImg=Instance.new('ImageLabel',logoFr)
+logoImg.Size=UDim2.new(1,0,1,0)
+logoImg.Position=UDim2.new(0.06,0,0.05,0)
+logoImg.BackgroundTransparency=1
+logoImg.Image="rbxthumb://type=Asset&id=122706095457631&w=420&h=420"
+logoImg.ScaleType=Enum.ScaleType.Fit
+local titleLbl=Instance.new('TextLabel',topBar)
+titleLbl.Text=self.Name
+titleLbl.TextColor3=THEME.Text
+titleLbl.TextSize=18
+titleLbl.Font=Enum.Font.GothamBold
+titleLbl.TextXAlignment=Enum.TextXAlignment.Left
+titleLbl.Position=UDim2.new(0,68,0,20)
+local leftFr=Instance.new('Frame',self.MainFrame)
+leftFr.Size=UDim2.new(0,110,1,-60)
+leftFr.Position=UDim2.new(0,10,0,55)
+leftFr.BackgroundColor3=THEME.Secondary
+leftFr.BorderSizePixel=0
+local leftCor=Instance.new('UICorner',leftFr)
+leftCor.CornerRadius=UDim.new(0,12)
+local leftStr=Instance.new('UIStroke',leftFr)
+leftStr.Thickness=1
+leftStr.Color=THEME.Stroke
+leftStr.Transparency=0
+local rightFr=Instance.new('Frame',self.MainFrame)
+rightFr.Size=UDim2.new(1,-125,1,-60)
+rightFr.Position=UDim2.new(0,115,0,55)
+rightFr.BackgroundColor3=THEME.Secondary
+rightFr.BorderSizePixel=0
+local rightCor=Instance.new('UICorner',rightFr)
+rightCor.CornerRadius=UDim.new(0,12)
+local rightStr=Instance.new('UIStroke',rightFr)
+rightStr.Thickness=1
+rightStr.Color=THEME.Stroke
+rightStr.Transparency=0
+self.LeftPanel=leftFr
+self.RightPanel=rightFr
+if self.Keybind then
+UserInputService.InputBegan:Connect(function(input,gameProcessed)
+if gameProcessed then return end
+if input.KeyCode==self.Keybind then
+self:Toggle()
+end
+end)
+end
+end
+function UILibrary:AddTab(name)
+local tab={}
+tab.Name=name
+tab.Buttons={}
+tab.CurrentY=10
+local tabButton=Instance.new('TextButton',self.LeftPanel)
+tabButton.Size=UDim2.new(1,-12,0,38)
+tabButton.Position=UDim2.new(0,6,0,8 + (#self.TabList * 42))
+tabButton.BackgroundColor3=THEME.Button
+tabButton.BorderSizePixel=0
+tabButton.Text=name
+tabButton.TextColor3=THEME.TextSecondary
+tabButton.TextSize=13
+tabButton.Font=Enum.Font.GothamMedium
+tabButton.AutoButtonColor=false
+local tabCor=Instance.new('UICorner',tabButton)
+tabCor.CornerRadius=UDim.new(0,10)
+local tabStr=Instance.new('UIStroke',tabButton)
+tabStr.Name="TabStroke"
+tabStr.Thickness=1
+tabStr.Color=THEME.Stroke
+tabStr.Transparency=0.6
+local tabFrame=Instance.new('Frame',self.RightPanel)
+tabFrame.Name=name
+tabFrame.Size=UDim2.new(1,0,1,0)
+tabFrame.Position=UDim2.new(0,0,0,0)
+tabFrame.BackgroundTransparency=1
+tabFrame.Visible=false
+tab.Button=tabButton
+tab.Frame=tabFrame
+tab.Buttons={}
+table.insert(self.TabList,tab)
+self.TabFrames[name]=tab
+if #self.TabList==1 then
+self:SelectTab(name)
+end
+tabButton.MouseButton1Click:Connect(function()
+self:SelectTab(name)
+end)
+tabButton.MouseEnter:Connect(function()
+if self.CurrentTab ~=tab then
+TweenService:Create(tabButton,TweenInfo.new(0.15),{BackgroundColor3=THEME.Hover}):Play()
+end
+end)
+tabButton.MouseLeave:Connect(function()
+if self.CurrentTab ~=tab then
+TweenService:Create(tabButton,TweenInfo.new(0.15),{BackgroundColor3=THEME.Button}):Play()
+end
+end)
+return tab
+end
+function UILibrary:SelectTab(name)
+for _,tab in ipairs(self.TabList) do
+if tab.Frame then
+tab.Frame.Visible=false
+end
+if tab.Button then
+tab.Button.BackgroundColor3=THEME.Button
+tab.Button.TextColor3=THEME.TextSecondary
+end
+end
+local selected=self.TabFrames[name]
+if selected then
+selected.Frame.Visible=true
+selected.Button.BackgroundColor3=THEME.Active
+selected.Button.TextColor3=THEME.Accent
+self.CurrentTab=selected
+end
+end
+function UILibrary:MakeTog(tab,yPos,text,callback,defaultState,cfgKey,side)
+local isR=side=="Right"
+local w=0.48
+local x=isR and 0.52 or 0.02
+local row=Instance.new('Frame',tab.Frame)
+row.Size=UDim2.new(w,0,0,32)
+row.Position=UDim2.new(x,0,0,yPos)
+row.BackgroundColor3=THEME.Button
+row.BorderSizePixel=0
+Instance.new('UICorner',row).CornerRadius=UDim.new(0,8)
+local str=Instance.new('UIStroke',row)
+str.Thickness=1
+str.Color=THEME.Stroke
+str.Transparency=0.5
+local lbl=Instance.new('TextLabel',row)
+lbl.Size=UDim2.new(0.65,0,1,0)
+lbl.Position=UDim2.new(0,12,0,0)
+lbl.BackgroundTransparency=1
+lbl.Text=text
+lbl.TextColor3=THEME.TextSecondary
+lbl.TextSize=13
+lbl.Font=Enum.Font.Gotham
+lbl.TextXAlignment=Enum.TextXAlignment.Left
+local tog=Instance.new('TextButton',row)
+tog.Size=UDim2.new(0,50,0,22)
+tog.Position=UDim2.new(1,-58,0.5,-11)
+tog.BackgroundColor3=Color3.fromRGB(40,45,60)
+tog.Text=""
+tog.AutoButtonColor=false
+Instance.new('UICorner',tog).CornerRadius=UDim.new(1,0)
+local togStr=Instance.new('UIStroke',tog)
+togStr.Thickness=1
+togStr.Color=THEME.Stroke
+togStr.Transparency=0.5
+local dot=Instance.new('Frame',tog)
+dot.Size=UDim2.new(0,16,0,16)
+dot.Position=UDim2.new(0,3,0.5,-8)
+dot.BackgroundColor3=Color3.fromRGB(120,130,160)
+dot.BorderSizePixel=0
+Instance.new('UICorner',dot).CornerRadius=UDim.new(1,0)
+local state=defaultState or false
+local function Upd()
+if state then
+dot.Position=UDim2.new(1,-19,0.5,-8)
+dot.BackgroundColor3=THEME.Accent
+tog.BackgroundColor3=Color3.fromRGB(40,30,35)
+else
+dot.Position=UDim2.new(0,3,0.5,-8)
+dot.BackgroundColor3=Color3.fromRGB(120,130,160)
+tog.BackgroundColor3=Color3.fromRGB(40,45,60)
+end
+end
+Upd()
+if state and callback then
+callback(true)
+end
+tog.MouseButton1Click:Connect(function()
+state=not state
+Upd()
+if callback then
+callback(state)
+end
+end)
+return row
+end
+function UILibrary:MakeButton(tab,yPos,text,callback,side)
+local isR=side=="Right"
+local w=0.48
+local x=isR and 0.52 or 0.02
+local row=Instance.new('Frame',tab.Frame)
+row.Size=UDim2.new(w,0,0,32)
+row.Position=UDim2.new(x,0,0,yPos)
+row.BackgroundColor3=THEME.Button
+row.BorderSizePixel=0
+Instance.new('UICorner',row).CornerRadius=UDim.new(0,8)
+local str=Instance.new('UIStroke',row)
+str.Thickness=1
+str.Color=THEME.Stroke
+str.Transparency=0.5
+local lbl=Instance.new('TextLabel',row)
+lbl.Size=UDim2.new(0.65,0,1,0)
+lbl.Position=UDim2.new(0,12,0,0)
+lbl.BackgroundTransparency=1
+lbl.Text=text
+lbl.TextColor3=THEME.TextSecondary
+lbl.TextSize=13
+lbl.Font=Enum.Font.Gotham
+lbl.TextXAlignment=Enum.TextXAlignment.Left
+local btn=Instance.new('TextButton',row)
+btn.Size=UDim2.new(0,50,0,22)
+btn.Position=UDim2.new(1,-58,0.5,-11)
+btn.BackgroundColor3=Color3.fromRGB(40,45,60)
+btn.Text="RUN"
+btn.TextColor3=THEME.Text
+btn.TextSize=12
+btn.Font=Enum.Font.GothamBold
+btn.AutoButtonColor=true
+Instance.new('UICorner',btn).CornerRadius=UDim.new(1,0)
+btn.MouseButton1Click:Connect(callback)
+return row
+end
+function UILibrary:MakeLabel(tab,yPos,text,side)
+local isR=side=="Right"
+local w=0.48
+local x=isR and 0.52 or 0.02
+local lbl=Instance.new('TextLabel',tab.Frame)
+lbl.Size=UDim2.new(w,0,0,25)
+lbl.Position=UDim2.new(x,0,0,yPos)
+lbl.BackgroundTransparency=1
+lbl.Text=text
+lbl.TextColor3=THEME.Accent
+lbl.TextSize=12
+lbl.Font=Enum.Font.GothamBold
+lbl.TextXAlignment=Enum.TextXAlignment.Left
+return lbl
+end
+function UILibrary:MakeSeparator(tab,yPos,side)
+local isR=side=="Right"
+local w=0.48
+local x=isR and 0.52 or 0.02
+local sep=Instance.new('Frame',tab.Frame)
+sep.Size=UDim2.new(w,0,0,2)
+sep.Position=UDim2.new(x,0,0,yPos)
+sep.BackgroundColor3=THEME.Stroke
+sep.BackgroundTransparency=0.5
+sep.BorderSizePixel=0
+return sep
+end
+function UILibrary:Toggle()
+self.Visible=not self.Visible
+self.MainFrame.Visible=self.Visible
+if self.ToggleBtn then
+if self.Visible then
+TweenService:Create(self.ToggleBtn,TweenInfo.new(0.2),{BackgroundColor3=THEME.Accent}):Play()
+else
+TweenService:Create(self.ToggleBtn,TweenInfo.new(0.2),{BackgroundColor3=Color3.fromRGB(0,0,0)}):Play()
+end
+end
+end
+function UILibrary:Show()
+self.Visible=true
+self.MainFrame.Visible=true
+end
+function UILibrary:Hide()
+self.Visible=false
+self.MainFrame.Visible=false
+end
+function UILibrary:Destroy()
+if self.Gui then
+self.Gui:Destroy()
+end
+end
+return UILibrary

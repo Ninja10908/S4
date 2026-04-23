@@ -8,7 +8,7 @@ Background=Color3.fromRGB(15,17,24),Secondary=Color3.fromRGB(22,25,35),Accent=Co
 }
 function UILibrary:New(name,keybind,toggleButton)
 local self=setmetatable({},{__index=UILibrary})
-self.Name = name
+self.Name = name or "System"
 self.Keybind=keybind or Enum.KeyCode.RightControl
 self.ToggleButton=toggleButton ~=false
 self.Gui=nil
@@ -22,14 +22,14 @@ return self
 end
 function UILibrary:Create()
 self.Gui=Instance.new('ScreenGui')
-self.Gui.Name = "ghh"
+self.Gui.Name = "SystemUI"
 self.Gui.ResetOnSpawn=false
 self.Gui.Parent=LocalPlayer:WaitForChild("PlayerGui")
 self.Gui.IgnoreGuiInset=true
-self.Gui.DisplayOrder=999999999
+self.Gui.DisplayOrder=1
 if self.ToggleButton then
 local khButton=Instance.new('TextButton')
-khButton.Name='Button'
+khButton.Name='ToggleBtn'
 khButton.Size=UDim2.new(0,50,0,50)
 khButton.Position=UDim2.new(0,20,0,87)
 khButton.BackgroundColor3=Color3.fromRGB(0,0,0)
@@ -39,7 +39,7 @@ khButton.TextSize=24
 khButton.Font=Enum.Font.GothamBold
 khButton.AutoButtonColor=true
 khButton.Parent=self.Gui
-khButton.ZIndex=999999999
+khButton.ZIndex=1
 local khStroke=Instance.new('UIStroke',khButton)
 khStroke.Thickness=2
 khStroke.Color=THEME.Accent
@@ -52,7 +52,7 @@ end)
 self.ToggleBtn=khButton
 end
 self.MainFrame=Instance.new('Frame')
-self.MainFrame.Name='menu'
+self.MainFrame.Name='MainFrame'
 self.MainFrame.Size=UDim2.new(0,450,0,320)
 self.MainFrame.Position=UDim2.new(0.5,0,0.5,0)
 self.MainFrame.AnchorPoint=Vector2.new(0.5,0.5)
@@ -84,6 +84,7 @@ topBar.Size=UDim2.new(1,0,0,50)
 topBar.Position=UDim2.new(0,0,0,0)
 topBar.BackgroundColor3=THEME.Secondary
 topBar.BorderSizePixel=0
+topBar.Name = "TopBar"
 local topCor=Instance.new('UICorner',topBar)
 topCor.CornerRadius=UDim.new(0,16)
 local topStr=Instance.new('UIStroke',topBar)
@@ -95,6 +96,7 @@ logoFr.Size=UDim2.new(0,40,0,40)
 logoFr.Position=UDim2.new(0,10,0.5,-20)
 logoFr.BackgroundColor3=Color3.fromRGB(0,0,0)
 logoFr.BorderSizePixel=0
+logoFr.Name = "LogoFrame"
 local logoCor=Instance.new('UICorner',logoFr)
 logoCor.CornerRadius=UDim.new(1,0)
 local logoImg=Instance.new('ImageLabel',logoFr)
@@ -103,6 +105,7 @@ logoImg.Position=UDim2.new(0.06,0,0.05,0)
 logoImg.BackgroundTransparency=1
 logoImg.Image="rbxthumb://type=Asset&id=122706095457631&w=420&h=420"
 logoImg.ScaleType=Enum.ScaleType.Fit
+logoImg.Name = "LogoImage"
 local titleLbl=Instance.new('TextLabel',topBar)
 titleLbl.Text=self.Name
 titleLbl.TextColor3=THEME.Text
@@ -110,11 +113,13 @@ titleLbl.TextSize=18
 titleLbl.Font=Enum.Font.GothamBold
 titleLbl.TextXAlignment=Enum.TextXAlignment.Left
 titleLbl.Position=UDim2.new(0,68,0,20)
+titleLbl.Name = "TitleLabel"
 local leftFr=Instance.new('Frame',self.MainFrame)
 leftFr.Size=UDim2.new(0,110,1,-60)
 leftFr.Position=UDim2.new(0,10,0,55)
 leftFr.BackgroundColor3=THEME.Secondary
 leftFr.BorderSizePixel=0
+leftFr.Name = "LeftPanel"
 local leftCor=Instance.new('UICorner',leftFr)
 leftCor.CornerRadius=UDim.new(0,12)
 local leftStr=Instance.new('UIStroke',leftFr)
@@ -126,6 +131,7 @@ rightFr.Size=UDim2.new(1,-125,1,-60)
 rightFr.Position=UDim2.new(0,115,0,55)
 rightFr.BackgroundColor3=THEME.Secondary
 rightFr.BorderSizePixel=0
+rightFr.Name = "RightPanel"
 local rightCor=Instance.new('UICorner',rightFr)
 rightCor.CornerRadius=UDim.new(0,12)
 local rightStr=Instance.new('UIStroke',rightFr)
@@ -158,6 +164,7 @@ tabButton.TextColor3=THEME.TextSecondary
 tabButton.TextSize=13
 tabButton.Font=Enum.Font.GothamMedium
 tabButton.AutoButtonColor=false
+tabButton.Name = "TabBtn_" .. name
 local tabCor=Instance.new('UICorner',tabButton)
 tabCor.CornerRadius=UDim.new(0,10)
 local tabStr=Instance.new('UIStroke',tabButton)
@@ -166,7 +173,7 @@ tabStr.Thickness=1
 tabStr.Color=THEME.Stroke
 tabStr.Transparency=0.6
 local tabFrame=Instance.new('Frame',self.RightPanel)
-tabFrame.Name=name
+tabFrame.Name=name .. "Content"
 tabFrame.Size=UDim2.new(1,0,1,0)
 tabFrame.Position=UDim2.new(0,0,0,0)
 tabFrame.BackgroundTransparency=1
@@ -221,6 +228,7 @@ row.Size=UDim2.new(w,0,0,32)
 row.Position=UDim2.new(x,0,0,yPos)
 row.BackgroundColor3=THEME.Button
 row.BorderSizePixel=0
+row.Name = "Row_" .. text:gsub("%s","")
 Instance.new('UICorner',row).CornerRadius=UDim.new(0,8)
 local str=Instance.new('UIStroke',row)
 str.Thickness=1
@@ -235,12 +243,14 @@ lbl.TextColor3=THEME.TextSecondary
 lbl.TextSize=13
 lbl.Font=Enum.Font.Gotham
 lbl.TextXAlignment=Enum.TextXAlignment.Left
+lbl.Name = "Label"
 local tog=Instance.new('TextButton',row)
 tog.Size=UDim2.new(0,50,0,22)
 tog.Position=UDim2.new(1,-58,0.5,-11)
 tog.BackgroundColor3=Color3.fromRGB(40,45,60)
 tog.Text=""
 tog.AutoButtonColor=false
+tog.Name = "ToggleBtn"
 Instance.new('UICorner',tog).CornerRadius=UDim.new(1,0)
 local togStr=Instance.new('UIStroke',tog)
 togStr.Thickness=1
@@ -251,6 +261,7 @@ dot.Size=UDim2.new(0,16,0,16)
 dot.Position=UDim2.new(0,3,0.5,-8)
 dot.BackgroundColor3=Color3.fromRGB(120,130,160)
 dot.BorderSizePixel=0
+dot.Name = "Dot"
 Instance.new('UICorner',dot).CornerRadius=UDim.new(1,0)
 local state=defaultState or false
 local function Upd()
@@ -286,6 +297,7 @@ row.Size=UDim2.new(w,0,0,32)
 row.Position=UDim2.new(x,0,0,yPos)
 row.BackgroundColor3=THEME.Button
 row.BorderSizePixel=0
+row.Name = "BtnRow_" .. text:gsub("%s","")
 Instance.new('UICorner',row).CornerRadius=UDim.new(0,8)
 local str=Instance.new('UIStroke',row)
 str.Thickness=1
@@ -300,6 +312,7 @@ lbl.TextColor3=THEME.TextSecondary
 lbl.TextSize=13
 lbl.Font=Enum.Font.Gotham
 lbl.TextXAlignment=Enum.TextXAlignment.Left
+lbl.Name = "Label"
 local btn=Instance.new('TextButton',row)
 btn.Size=UDim2.new(0,50,0,22)
 btn.Position=UDim2.new(1,-58,0.5,-11)
@@ -309,6 +322,7 @@ btn.TextColor3=THEME.Text
 btn.TextSize=12
 btn.Font=Enum.Font.GothamBold
 btn.AutoButtonColor=true
+btn.Name = "ActionBtn"
 Instance.new('UICorner',btn).CornerRadius=UDim.new(1,0)
 btn.MouseButton1Click:Connect(callback)
 return row
@@ -326,6 +340,7 @@ lbl.TextColor3=THEME.Accent
 lbl.TextSize=12
 lbl.Font=Enum.Font.GothamBold
 lbl.TextXAlignment=Enum.TextXAlignment.Left
+lbl.Name = "InfoLabel"
 return lbl
 end
 function UILibrary:MakeSeparator(tab,yPos,side)
@@ -338,6 +353,7 @@ sep.Position=UDim2.new(x,0,0,yPos)
 sep.BackgroundColor3=THEME.Stroke
 sep.BackgroundTransparency=0.5
 sep.BorderSizePixel=0
+sep.Name = "Separator"
 return sep
 end
 function UILibrary:Toggle()

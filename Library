@@ -8,7 +8,7 @@ Background=Color3.fromRGB(15,17,24),Secondary=Color3.fromRGB(22,25,35),Accent=Co
 }
 function UILibrary:New(name,keybind,toggleButton)
 local self=setmetatable({},{__index=UILibrary})
-self.Name=name or "UI"
+self.Name = name
 self.Keybind=keybind or Enum.KeyCode.RightControl
 self.ToggleButton=toggleButton ~=false
 self.Gui=nil
@@ -22,14 +22,14 @@ return self
 end
 function UILibrary:Create()
 self.Gui=Instance.new('ScreenGui')
-self.Gui.Name=self.Name .. 'GUI'
+self.Gui.Name = "ghh"
 self.Gui.ResetOnSpawn=false
 self.Gui.Parent=LocalPlayer:WaitForChild("PlayerGui")
 self.Gui.IgnoreGuiInset=true
 self.Gui.DisplayOrder=999999999
 if self.ToggleButton then
 local khButton=Instance.new('TextButton')
-khButton.Name='KHButton'
+khButton.Name='Button'
 khButton.Size=UDim2.new(0,50,0,50)
 khButton.Position=UDim2.new(0,20,0,87)
 khButton.BackgroundColor3=Color3.fromRGB(0,0,0)
@@ -52,7 +52,7 @@ end)
 self.ToggleBtn=khButton
 end
 self.MainFrame=Instance.new('Frame')
-self.MainFrame.Name='MainFr'
+self.MainFrame.Name='menu'
 self.MainFrame.Size=UDim2.new(0,450,0,320)
 self.MainFrame.Position=UDim2.new(0.5,0,0.5,0)
 self.MainFrame.AnchorPoint=Vector2.new(0.5,0.5)

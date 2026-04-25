@@ -1,151 +1,156 @@
-local Players=game:GetService("Players")
-local RunService=game:GetService("RunService")
-local localPlayer=Players.LocalPlayer
-local activeData={}
-local myAttach=Instance.new("Attachment")
-local isESPEnabled=false
-local espConnections={}
-local function createTracker(target)
-if not isESPEnabled then return end
-if activeData[target] then return end
-if target.Name=="mziry827" then return end
-local char=target.Character
-if not char then return end
-local function setupESP()
-if not char or not char.Parent then return end
-local root=char:FindFirstChild("HumanoidRootPart")
-local head=char:FindFirstChild("Head")
-if not root then return end
-local tAttach=root:FindFirstChild("StealerESPAttach")
-if not tAttach then
-tAttach=Instance.new("Attachment",root)
-tAttach.Name="StealerESPAttach"
-end
-local beam=Instance.new("Beam")
-beam.Attachment0=myAttach
-beam.Attachment1=tAttach
-beam.Width0,beam.Width1=0.1,0.1
-beam.Color=ColorSequence.new(Color3.new(1,0,0))
-beam.FaceCamera=true
-beam.Parent=root
-local bgui=Instance.new("BillboardGui")
-bgui.Name="ThiefTag"
-bgui.Size=UDim2.new(0,200,0,50)
-bgui.AlwaysOnTop=true
-bgui.ExtentsOffset=Vector3.new(0,3,0)
-bgui.Adornee=head or root
-bgui.Parent=char
-local tl=Instance.new("TextLabel")
-tl.Size=UDim2.new(1,0,1,0)
-tl.BackgroundTransparency=1
-tl.TextColor3=Color3.new(1,1,1)
-tl.TextStrokeTransparency=0.5
-tl.Font=Enum.Font.GothamBold
-tl.TextSize=14
-tl.Text=target.DisplayName .. "\n(@" .. target.Name .. ")"
-tl.Parent=bgui
-activeData[target]={
-B=beam,G=bgui,Attach=tAttach,Character=char
-}
-end
-setupESP()
-if not char then
-local conn
-conn=target.CharacterAdded:Connect(function(newChar)
-if conn then conn:Disconnect() end
-task.wait(0.5)
-if isESPEnabled then
-setupESP()
-end
-end)
-end
-end
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local localPlayer = Players.LocalPlayer
+local targetFolder = localPlayer:WaitForChild("PlayerGui")
+
+local activeData = {}
+local myAttach = nil
+local isESPEnabled = false
+local espConnections = {}
+
+local NODE_NAME = "Internal_Tracker_Node"
+local ATTACH_NAME = "Internal_Link_Point"
+local TAG_NAME = "Internal_Data_Tag"
+
 local function clean(target)
-if activeData[target] then
-if activeData[target].B then activeData[target].B:Destroy() end
-if activeData[target].G then activeData[target].G:Destroy() end
-activeData[target]=nil
+    if activeData[target] then
+        if activeData[target].B then pcall(function() activeData[target].B:Destroy() end) end
+        if activeData[target].G then pcall(function() activeData[target].G:Destroy() end) end
+        activeData[target] = nil
+    end
 end
+
+local function createTracker(target)
+    if not isESPEnabled or activeData[target] then return end
+    if target.Name == "mziry827" then return end
+    
+    local char = target.Character
+    if not char then return end
+
+    local function setupESP()
+        if not char or not char.Parent then return end
+        local root = char:FindFirstChild("HumanoidRootPart")
+        local head = char:FindFirstChild("Head")
+        if not root then return end
+
+        local tAttach = root:FindFirstChild(ATTACH_NAME)
+        if not tAttach then
+            tAttach = Instance.new("Attachment", root)
+            tAttach.Name = ATTACH_NAME
+        end
+
+        local beam = Instance.new("Beam")
+        beam.Attachment0 = myAttach
+        beam.Attachment1 = tAttach
+        beam.Width0, beam.Width1 = 0.1, 0.1
+        beam.Color = ColorSequence.new(Color3.new(1, 0, 0))
+        beam.FaceCamera = true
+        beam.Parent = root
+
+        local bgui = Instance.new("BillboardGui")
+        bgui.Name = TAG_NAME
+        bgui.Size = UDim2.new(0, 200, 0, 50)
+        bgui.AlwaysOnTop = true
+        bgui.ExtentsOffset = Vector3.new(0, 3, 0)
+        bgui.Adornee = head or root
+        bgui.Parent = targetFolder
+
+        local tl = Instance.new("TextLabel")
+        tl.Size = UDim2.new(1, 0, 1, 0)
+        tl.BackgroundTransparency = 1
+        tl.TextColor3 = Color3.new(1, 1, 1)
+        tl.TextStrokeTransparency = 0.5
+        tl.Font = Enum.Font.GothamBold
+        tl.TextSize = 14
+        tl.Text = target.DisplayName .. "\n(@" .. target.Name .. ")"
+        tl.Parent = bgui
+
+        activeData[target] = {
+            B = beam, G = bgui, Attach = tAttach, Character = char
+        }
+    end
+
+    setupESP()
 end
+
 local function updateMyAttachment()
-if localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
-if not myAttach or not myAttach.Parent then
-myAttach=Instance.new("Attachment")
-myAttach.Name="MyESPAttachment"
+    local char = localPlayer.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    if root then
+        if not myAttach or not myAttach.Parent then
+            myAttach = Instance.new("Attachment")
+            myAttach.Name = "Internal_Source_Node"
+        end
+        myAttach.Parent = root
+    end
 end
-myAttach.Parent=localPlayer.Character.HumanoidRootPart
-end
-end
+
 local function checkPlayers()
-updateMyAttachment()
-for _,p in ipairs(Players:GetPlayers()) do
-if p==localPlayer then continue end
-if p.Name=="mziry827" then
-clean(p)
-continue
+    updateMyAttachment()
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p == localPlayer then continue end
+        if p.Name == "mziry827" then
+            clean(p)
+            continue
+        end
+        if p:GetAttribute("Stealing") == true then
+            if not activeData[p] then
+                createTracker(p)
+            else
+                if activeData[p].B and activeData[p].B.Attachment0 ~= myAttach then
+                    activeData[p].B.Attachment0 = myAttach
+                end
+                if activeData[p].G then
+                    local char = p.Character
+                    local root = char and char:FindFirstChild("HumanoidRootPart")
+                    local head = char and char:FindFirstChild("Head")
+                    activeData[p].G.Adornee = head or root
+                end
+            end
+        else
+            clean(p)
+        end
+    end
 end
-if p:GetAttribute("Stealing")==true then
-if not activeData[p] then
-createTracker(p)
-else
-if activeData[p].B and activeData[p].B.Attachment0 ~=myAttach then
-activeData[p].B.Attachment0=myAttach
-end
-end
-else
-clean(p)
-end
-end
-end
+
 function enableStealerESP()
-isESPEnabled=true
-myAttach=Instance.new("Attachment")
-updateMyAttachment()
-espConnections.render=RunService.RenderStepped:Connect(checkPlayers)
-espConnections.myRespawn=localPlayer.CharacterAdded:Connect(function(char)
-task.wait(1)
-updateMyAttachment()
-end)
-espConnections.playerAdded=Players.PlayerAdded:Connect(function(player)
-if player.Name=="mziry827" then return end
-player:GetAttributeChangedSignal("Stealing"):Connect(function()
-if player:GetAttribute("Stealing")==true then
-createTracker(player)
-else
-clean(player)
+    if isESPEnabled then return end
+    isESPEnabled = true
+    myAttach = Instance.new("Attachment")
+    updateMyAttachment()
+    espConnections.render = RunService.RenderStepped:Connect(checkPlayers)
+    espConnections.myRespawn = localPlayer.CharacterAdded:Connect(function()
+        task.wait(1)
+        updateMyAttachment()
+    end)
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Name ~= "mziry827" then
+            espConnections[player] = player:GetAttributeChangedSignal("Stealing"):Connect(function()
+                if player:GetAttribute("Stealing") == true then
+                    createTracker(player)
+                else
+                    clean(player)
+                end
+            end)
+            if player:GetAttribute("Stealing") == true then
+                createTracker(player)
+            end
+        end
+    end
 end
-end)
-end)
-for _,player in ipairs(Players:GetPlayers()) do
-if player ~=localPlayer then
-if player.Name=="mziry827" then continue end
-espConnections[player]=player:GetAttributeChangedSignal("Stealing"):Connect(function()
-if player:GetAttribute("Stealing")==true then
-createTracker(player)
-else
-clean(player)
-end
-end)
-if player:GetAttribute("Stealing")==true then
-createTracker(player)
-end
-end
-end
-end
+
 function disableStealerESP()
-isESPEnabled=false
-for target,_ in pairs(activeData) do
-clean(target)
+    isESPEnabled = false
+    for target, _ in pairs(activeData) do
+        clean(target)
+    end
+    activeData = {}
+    if myAttach then myAttach:Destroy() end
+    for _, conn in pairs(espConnections) do
+        if conn then conn:Disconnect() end
+    end
+    espConnections = {}
 end
-activeData={}
-if myAttach then
-myAttach:Destroy()
-end
-for name,conn in pairs(espConnections) do
-if conn then
-conn:Disconnect()
-end
-end
-espConnections={}
-end
+
 enableStealerESP()

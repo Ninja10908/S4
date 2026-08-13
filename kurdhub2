@@ -1,5 +1,1 @@
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "KurdHub",
-    Text = "Updating…",
-    Duration = 4
-})
+loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/49d0e7b8f0dbe536dbcad65f0b20458c.lua"))()
